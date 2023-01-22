@@ -1,8 +1,12 @@
 import getConfig from "next/config";
 
-export default async function GetCurrentUser() {
+export default async function GetCurrentUser(): Promise<any> {
   const {
     publicRuntimeConfig: { BACKEND_URL },
   } = getConfig();
-  await fetch(`${BACKEND_URL}`);
+  return await (
+    await fetch(`${BACKEND_URL}/api/spotify/getCurrentUser`, {
+      credentials: "include",
+    })
+  ).json();
 }

@@ -2,12 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  env: {
-    PORT: process.env.PORT
-  },
   publicRuntimeConfig: {
-    env: process.env,
-    BACKEND_URL: process.env.NODE_ENV === 'production' ? 'https://aif-app-server.herokuapp.com' : 'http://localhost:' + (process.env.PORT || 8080)
+    BACKEND_URL: process.env.NODE_ENV === 'production' ? 'https://aif-app-server.herokuapp.com' : 'http://localhost:8080'
   },
   images: {
     remotePatterns: [

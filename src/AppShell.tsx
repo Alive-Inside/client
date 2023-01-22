@@ -10,6 +10,7 @@ import useStyles from "./styles";
 import SpotifyUserData from "./types/SpotifyUserData";
 import NO_SPOTIFY_AVATAR_IMAGE from '../public/no_spotify_avatar.png';
 import getConfig from "next/config";
+import GetCurrentUser from "./api/GetCurrentUser";
 
 
 export default function AppShell({ children }: { children: any }) {
@@ -25,9 +26,9 @@ export default function AppShell({ children }: { children: any }) {
 
     useEffect(() => {
 
-        async function GetCurrentUser() {
+        async function LoginCheck() {
             try {
-                const response = await (await fetch(`${BACKEND_URL}/api/spotify/getCurrentUser`, { credentials: 'include' })).json();
+                const response = await GetCurrentUser();
                 if (response !== undefined) {
                     const { name, avatar } = response;
                     setUser({ name, avatar });
@@ -41,7 +42,7 @@ export default function AppShell({ children }: { children: any }) {
                 setIsLoading(false);
             }
         }
-        GetCurrentUser();
+        LoginCheck();
     }, [])
 
     return (
