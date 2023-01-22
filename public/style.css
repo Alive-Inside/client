@@ -1,0 +1,31 @@
+.welcome>div {
+    line-height: 1.5;
+}
+
+.searchBar>div>input {
+    border-radius: 100px;
+    width: 20rem;
+    background-color: white;
+    color: black;
+}
+
+.searchBar>div>.mantine-TextInput-icon {
+    /* width: 100%; */
+}
+
+.searchIcon {
+    /* position: absolute;
+    left: 10px;
+    top: 22%; */
+}
+
+.cancelSearchIcon {
+    /* position: absolute; */
+    z-index: 2;
+    /* right: 1.3rem; */
+    cursor: pointer;
+}
+
+.alreadyInPlaylist>div>span>svg {
+    display: none
+}
