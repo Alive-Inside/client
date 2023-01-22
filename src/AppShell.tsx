@@ -24,8 +24,6 @@ export default function AppShell({ children }: { children: any }) {
     } = getConfig();
 
     useEffect(() => {
-        console.log('publicRuntime:', getConfig())
-        console.log(fetch(window.location.protocol + window.location.hostname + '/api/spotify/getCurrentUser'));
 
         async function GetCurrentUser() {
             try {
