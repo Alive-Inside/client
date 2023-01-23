@@ -11,13 +11,19 @@ export default function QuestionsPage({ spotifyUserData }: { spotifyUserData: Sp
 }
 
 export function getServerSideProps(context) {
+    console.log('ehre')
     try {
         const { accessToken, refreshToken, countryCode, avatar, name, expiresAt, userId, email, isPremium } = JSON.parse(context.req?.cookies?.spotifyUserData);
         const spotifyUserData: SpotifyUserData = { countryCode, avatar, accessToken, refreshToken, expiresAt, name, userId, email, isPremium };
+        console.log(spotifyUserData)
         return { props: { spotifyUserData } }
     } catch (e) {
-        context.res.writeHead(302, { location: "/" });
-        context.res.end();
-        return { props: {} }
+        console.error(e)
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false
+            }
+        }
     }
 }
