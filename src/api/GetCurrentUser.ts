@@ -5,7 +5,7 @@ export default async function GetCurrentUser(): Promise<any> {
     publicRuntimeConfig: { BACKEND_URL },
   } = getConfig();
   return await (
-    await fetch(`${BACKEND_URL}/api/spotify/getCurrentUser`, {
+    await fetch(`${BACKEND_URL}/spotify/getCurrentUser`, {
       credentials: "include",
     })
   ).json();

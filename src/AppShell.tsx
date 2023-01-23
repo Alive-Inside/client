@@ -25,7 +25,6 @@ export default function AppShell({ children }: { children: any }) {
     } = getConfig();
 
     useEffect(() => {
-
         async function LoginCheck() {
             try {
                 const response = await GetCurrentUser();
