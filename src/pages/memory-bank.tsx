@@ -9,10 +9,11 @@ import useStyles from "../styles";
 import SpotifyUserData from "../types/SpotifyUserData";
 import EmailList from "../components/EmailList.tsx/EmailList";
 
-export default function MemoryBankPage({ spotifyUserData }: { spotifyUserData: SpotifyUserData }) {
+export default function MemoryBankPage() {
     const tracks = useRef<Track[]>([]);
     const formQuestionsAndAnswers = useRef<{ question: string, answer: string }[]>([])
     const [emailsSent, setEmailsSent] = useState(false);
+    const [spotifyUserData, setSpotifyUserData] = useState<SpotifyUserData>(null);
 
     const [emails, setEmails] = useState<string[]>([]);
 
@@ -22,6 +23,7 @@ export default function MemoryBankPage({ spotifyUserData }: { spotifyUserData: S
 
     useEffect(() => {
         try {
+            setSpotifyUserData(JSON.parse(localStorage.getItem('spotifyUserData')));
             const formAnswers = JSON.parse(localStorage.getItem('formQuestionsAndAnswers'));
             formQuestionsAndAnswers.current = formAnswers;
 
@@ -81,11 +83,4 @@ export default function MemoryBankPage({ spotifyUserData }: { spotifyUserData: S
             }
         </div>
     )
-}
-
-
-export function getServerSideProps(context) {
-    const { accessToken, refreshToken, avatar, isPremium, countryCode, name, userId, expiresAt, email } = JSON.parse(context.req?.cookies?.spotifyUserData);
-    const spotifyUserData: SpotifyUserData = { countryCode, avatar, accessToken, refreshToken, expiresAt, name, userId, email, isPremium };
-    return { props: { spotifyUserData } }
 }
