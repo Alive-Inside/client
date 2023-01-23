@@ -6,7 +6,7 @@ export default function Login({ }) {
         <Center>
             <Card>
                 <Text>To use the app, please sign in with Spotify</Text><br />
-                <SpotifyLoginButton />
+                <SpotifyLoginButton redirectToApp={true} />
             </Card>
         </Center>
     )

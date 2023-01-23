@@ -3,10 +3,10 @@ import { IconBrandSpotify } from "@tabler/icons";
 import getConfig from "next/config";
 import Link from "next/link";
 
-export default function SpotifyLoginButton() {
-    const {
+export default function SpotifyLoginButton({ redirectToApp = false }) {
+  const {
     publicRuntimeConfig: { BACKEND_URL },
   } = getConfig();
 
-    return <Button fullWidth onClick={() => { window.location.href = `${BACKEND_URL}/auth/login` }} variant="outline" color="green"><IconBrandSpotify style={{ marginRight: '5px' }} />Login with Spotify</Button>
+  return <Button fullWidth onClick={() => { window.location.href = `${BACKEND_URL}/auth/login?redirectToApp=${redirectToApp}` }} variant="outline" color="green"><IconBrandSpotify style={{ marginRight: '5px' }} />Login with Spotify</Button>
 } 
