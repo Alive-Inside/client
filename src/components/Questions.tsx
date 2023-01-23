@@ -16,16 +16,16 @@ import { IconBrandSpotify } from "@tabler/icons";
 import Link from "next/link";
 import SpotifyLoginButton from "./SpotifyLoginButton";
 
-export default function Questions({ spotifyUserData }: { spotifyUserData: SpotifyUserData }) {
+export default function Questions({ isLoggedIn }) {
     const [isGeneratingPlaylist, setIsGeneratingPlaylist] = useState(false);
     const [generatedPlaylistTracks, setGeneratedPlaylistTracks] = useState<Track[]>([]);
     const largeScreen = useMediaQuery(LARGE_SCREEN);
     const { classes } = useStyles();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
     const [promptIndex, setPromptIndex] = useState(0);
+    const [spotifyUserData, setSpotifyUserData] = useState<SpotifyUserData>(null);
 
     useEffect(() => {
+        setSpotifyUserData(JSON.parse(localStorage.getItem('spotifyUserData')));
         const previouslyGeneratedTracks = JSON.parse(localStorage.getItem('previouslyGeneratedTracks'))
         if (previouslyGeneratedTracks) {
             setGeneratedPlaylistTracks(previouslyGeneratedTracks);
@@ -300,13 +300,20 @@ export default function Questions({ spotifyUserData }: { spotifyUserData: Spotif
             {
                 <div style={{ maxWidth: "40rem", textAlign: 'center', padding: '10px' }} className="question">
                     {
-                        <form>
-                            {prompts[promptIndex].element}
-                            <Group position="center" mt="md">
-                                {promptIndex >= 1 && promptIndex < prompts.length - 2 && <Button variant="white" size='xl' radius={'xl'} onClick={handleBack}>Back</Button>}
-                                {(['readonly', 'multiSelect'].includes(prompts[promptIndex].formType) || (prompts[promptIndex].formType === 'searchInput' && form.values[prompts[promptIndex].formValue].length > 0) || (prompts[promptIndex].formType === 'shortAnswer' && form.values[prompts[promptIndex].formValue]?.length > 0) || (prompts[promptIndex].formType === 'numberInput' && !isNaN(form.values[prompts[promptIndex].formValue]))) && <Button variant="white" radius={'xl'} size="xl" onClick={handleNext}>{promptIndex === 0 ? 'Begin' : 'Next'}</Button>}
-                            </Group>
-                        </form>
+                        !isLoggedIn ?
+                    <Center>
+                        <Card>
+                            <Text>To use the app, please sign in with Spotify</Text><br />
+                            <SpotifyLoginButton redirectToApp={true} />
+                        </Card>
+                    </Center> :
+                    <form>
+                        {prompts[promptIndex].element}
+                        <Group position="center" mt="md">
+                            {promptIndex >= 1 && promptIndex < prompts.length - 2 && <Button variant="white" size='xl' radius={'xl'} onClick={handleBack}>Back</Button>}
+                            {(['readonly', 'multiSelect'].includes(prompts[promptIndex].formType) || (prompts[promptIndex].formType === 'searchInput' && form.values[prompts[promptIndex].formValue].length > 0) || (prompts[promptIndex].formType === 'shortAnswer' && form.values[prompts[promptIndex].formValue]?.length > 0) || (prompts[promptIndex].formType === 'numberInput' && !isNaN(form.values[prompts[promptIndex].formValue]))) && <Button variant="white" radius={'xl'} size="xl" onClick={handleNext}>{promptIndex === 0 ? 'Begin' : 'Next'}</Button>}
+                        </Group>
+                    </form>
                     }
                 </div>
             }

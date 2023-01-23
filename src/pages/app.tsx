@@ -2,29 +2,29 @@ import _ from "lodash";
 import SpotifyUserData from "../types/SpotifyUserData";
 import Questions from "../components/Questions";
 import { InferGetServerSidePropsType } from "next";
+import { cookies } from 'next/headers';
+import GetCurrentUser from "../api/GetCurrentUser";
+import { Skeleton } from "@mantine/core";
+import { useEffect, useState } from "react";
 
-export default function QuestionsPage({ spotifyUserData }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '80vh', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
-            <Questions spotifyUserData={spotifyUserData} />
-        </div>
-    )
-}
+export default function QuestionsPage({ spotifyUserData }) {
+    const [isLoading, setIsLoading] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-export function getServerSideProps(context) {
-    try {
-        console.log('cookies:',context.req.cookies)
-        const { accessToken, refreshToken, countryCode, avatar, name, expiresAt, userId, email, isPremium } = JSON.parse(context.req?.cookies?.spotifyUserData);
-        const spotifyUserData: SpotifyUserData = { countryCode, avatar, accessToken, refreshToken, expiresAt, name, userId, email, isPremium };
-        console.log(spotifyUserData)
-        return { props: { spotifyUserData } }
-    } catch (e) {
-        console.error(e)
-        return {
-            redirect: {
-                destination: '/login',
-                permanent: false
-            }
+    useEffect(() => {
+        async function init() {
+            const user = await GetCurrentUser();
+            setIsLoading(false);
+            setIsLoggedIn(user !== undefined);
         }
-    }
+        init();
+    }, [])
+
+    return (
+        <Skeleton visible={isLoading}>
+            <div style={{ display: 'flex', flexDirection: 'column', height: '80vh', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+                <Questions isLoggedIn={isLoggedIn} />
+            </div>
+        </Skeleton>
+    )
 }
