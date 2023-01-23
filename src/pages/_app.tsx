@@ -7,6 +7,7 @@ import AppShell from "../AppShell";
 import SpotifyUserData from "../types/SpotifyUserData";
 import { useEffect, useState } from "react";
 import { NavigationProgress } from "@mantine/nprogress";
+import * as FullStory from '@fullstory/browser';
 
 
 export default function App(props: AppProps) {
@@ -14,7 +15,7 @@ export default function App(props: AppProps) {
   const [spotifyUserData, setSpotifyUserData] = useState<SpotifyUserData>(null);
 
   useEffect(() => {
-
+    FullStory.init({ orgId: process.env.FULLSTORY_ORG_ID });
   }, [])
   return (
     <>

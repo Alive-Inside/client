@@ -18,6 +18,7 @@
     "@babel/core": "^7.20.12",
     "@emotion/react": "^11.10.0",
     "@emotion/server": "^11.10.0",
+    "@fullstory/browser": "^1.6.2",
     "@mantine/core": "^5.10.1",
     "@mantine/form": "^5.9.5",
     "@mantine/hooks": "5.8.3",
