@@ -1,3 +1,5 @@
+const { hostname } = require("os")
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -9,7 +11,14 @@ const nextConfig = {
     BACKEND_URL: process.env.NODE_ENV === 'production' ? 'https://aif-app-server.herokuapp.com' : 'http://localhost:8080'
   },
   images: {
-    domains: ['scontent-mia3-1.xx.fbcdn.net', 'i.scdn.co'],
+    remotePatterns: [
+      {
+        hostname: '*.fbcdn.net',
+      },
+      {
+        hostname: '*.scdn.co'
+      }
+    ]
   }
 }
 
