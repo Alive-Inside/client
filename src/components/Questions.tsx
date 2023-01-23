@@ -163,7 +163,7 @@ export default function Questions({ isLoggedIn }) {
                             <Grid.Col span={7}>
                                 <Text style={{ textAlign: 'left' }} size={'lg'}><b>What happens now:</b> </Text>
                                 <List size={largeScreen ? 'lg' : 'xs'} style={{ textAlign: 'left' }} type="ordered">
-                                    <List.Item>Listen to the songs below with your Elder</List.Item>
+                                    <List.Item>Listen to the songs with your Elder</List.Item>
                                     <List.Item>Remove unwanted songs</List.Item>
                                     <List.Item>Add more songs using the +5 button</List.Item>
                                     <List.Item>Find new artists using the search bar</List.Item>
