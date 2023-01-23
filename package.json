@@ -2,6 +2,9 @@
   "name": "mantine-minimal-next-template",
   "version": "0.1.0",
   "private": true,
+  "cacheDirectories": [
+    ".next/cache"
+  ],
   "scripts": {
     "go": "next dev",
     "build": "next build",

@@ -28,6 +28,7 @@ export default function AppShell({ children }: { children: any }) {
         async function LoginCheck() {
             try {
                 const response = await GetCurrentUser();
+                console.log('user:', response);
                 if (response !== undefined) {
                     const { name, avatar } = response;
                     setUser({ name, avatar });

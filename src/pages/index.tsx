@@ -2,7 +2,7 @@ import { Button, Card, Container, Group, Notification, Text, Title } from "@mant
 import { IconX } from "@tabler/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useStyles from "../styles";
 
 export default function IndexPage({ isLoggedIn, refreshToken, accessToken }) {
@@ -14,6 +14,10 @@ export default function IndexPage({ isLoggedIn, refreshToken, accessToken }) {
   function hideNotification() {
     setShowLoginNotification(false);
   }
+
+  useEffect(() => {
+    localStorage.setItem('tokens', JSON.stringify({ accessToken, refreshToken }));
+  })
 
   return (
     <div>
