@@ -18,5 +18,6 @@ export function getServerSideProps(context) {
     } catch (e) {
         context.res.writeHead(302, { location: "/" });
         context.res.end();
+        return { props: {} }
     }
 }

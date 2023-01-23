@@ -15,10 +15,6 @@ export default function IndexPage({ isLoggedIn, refreshToken, accessToken }) {
     setShowLoginNotification(false);
   }
 
-  useEffect(() => {
-    localStorage.setItem('tokens', JSON.stringify({ accessToken, refreshToken }));
-  })
-
   return (
     <div>
       {router.query.redirect && showLoginNotification && <Notification onClick={hideNotification} icon={<IconX size={18} />} color="red">

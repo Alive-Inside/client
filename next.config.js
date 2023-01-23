@@ -6,14 +6,7 @@ const nextConfig = {
     BACKEND_URL: process.env.NODE_ENV === 'production' ? 'https://aif-app-server.herokuapp.com' : 'http://localhost:8080'
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'i.scdn.co',
-        pathname: '/image/**',
-        port: ''
-      }
-    ]
+    domains: ['scontent-mia3-1.xx.fbcdn.net', 'i.scdn.co'],
   }
 }
 
