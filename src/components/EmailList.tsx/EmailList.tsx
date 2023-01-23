@@ -1,7 +1,7 @@
 import { Button, Center, Container, ScrollArea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconAt } from "@tabler/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddedEmail from "./AddedEmail";
 
 export default function EmailList({ initialEmails, onSubmit }: { initialEmails: string[], onSubmit: Function }) {
@@ -17,6 +17,10 @@ export default function EmailList({ initialEmails, onSubmit }: { initialEmails: 
             }
         }
     })
+
+    useEffect(() => {
+        console.log(initialEmails)
+    },[]);
 
     function addEmail() {
         if (!form.validateField('email').hasError) {
