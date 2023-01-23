@@ -38,7 +38,7 @@ export default function MemoryBankPage({ spotifyUserData }: { spotifyUserData: S
 
     }, []);
 
-    async function onSubmit() {
+    async function onSubmit(emails) {
         try {
             SendEmail(emails, formQuestionsAndAnswers.current);
             setEmailsSent(true);
