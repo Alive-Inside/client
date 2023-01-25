@@ -15,7 +15,7 @@ export default function QuestionsPage({ spotifyUserData }) {
         async function init() {
             const user = localStorage.getItem('spotifyUserData')
             setIsLoading(false);
-            setIsLoggedIn(user !== undefined);
+            setIsLoggedIn(user !== null);
         }
         init();
     }, [])
