@@ -13,7 +13,7 @@ export default function QuestionsPage({ spotifyUserData }) {
 
     useEffect(() => {
         async function init() {
-            const user = await GetCurrentUser();
+            const user = localStorage.getItem('spotifyUserData')
             setIsLoading(false);
             setIsLoggedIn(user !== undefined);
         }
