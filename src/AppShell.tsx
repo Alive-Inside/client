@@ -30,6 +30,10 @@ export default function AppShell({ children }: { children: any }) {
     const router = useRouter();
 
     useEffect(() => {
+        async function decodeJWT() {
+            const jwt = window.location.href.split('jwt=')[1];
+            return await DecodeToken(jwt)
+        };
         async function LoginCheck() {
             setIsLoading(true);
             if (router.query.logout) {
@@ -37,16 +41,23 @@ export default function AppShell({ children }: { children: any }) {
                 setIsLoggedIn(false);
                 router.replace('/');
             } else {
-                try {
-                    const spotifyUserDataItem = localStorage.getItem('spotifyUserData');
-                    setIsLoggedIn(spotifyUserDataItem !== undefined);
-                    if (spotifyUserDataItem) {
-                        const { name, avatar } = JSON.parse(spotifyUserDataItem);
-                        setUser({ name, avatar });
+                if (router.query.jwt) {
+                    const spotifyUserData: any = await decodeJWT();
+                    localStorage.setItem('spotifyUserData', JSON.stringify(spotifyUserData))
+                    setUser({ avatar: spotifyUserData.avatar, name: spotifyUserData.name });
+                    router.replace('/');
+                } else {
+                    try {
+                        const spotifyUserDataItem = localStorage.getItem('spotifyUserData');
+                        if (!spotifyUserDataItem) {
+                        } else {
+                            const { name, avatar } = JSON.parse(spotifyUserDataItem);
+                            setUser({ name, avatar });
+                        }
+                        setIsLoading(false);
+                    } catch (e) {
+                        setIsLoggedIn(false);
                     }
-                    setIsLoading(false);
-                } catch (e) {
-                    setIsLoggedIn(false);
                 }
             }
             setIsLoading(false);
