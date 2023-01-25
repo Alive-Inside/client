@@ -11,6 +11,9 @@ import SpotifyUserData from "./types/SpotifyUserData";
 import NO_SPOTIFY_AVATAR_IMAGE from '../public/no_spotify_avatar.png';
 import getConfig from "next/config";
 import GetCurrentUser from "./api/GetCurrentUser";
+import { Router, useRouter } from "next/router";
+import e from "cors";
+import DecodeToken from "./api/DecodeToken";
 
 
 export default function AppShell({ children }: { children: any }) {
@@ -24,22 +27,29 @@ export default function AppShell({ children }: { children: any }) {
         publicRuntimeConfig: { BACKEND_URL },
     } = getConfig();
 
+    const router = useRouter();
+
     useEffect(() => {
         async function LoginCheck() {
-            try {
-                const response = await GetCurrentUser();
-                if (response !== undefined) {
-                    const { name, avatar } = response;
-                    setUser({ name, avatar });
-                    setIsLoggedIn(true);
-                } else {
+            setIsLoading(true);
+            if (router.query.logout) {
+                localStorage.removeItem('spotifyUserData')
+                setIsLoggedIn(false);
+                router.replace('/');
+            } else {
+                try {
+                    const spotifyUserDataItem = localStorage.getItem('spotifyUserData');
+                    setIsLoggedIn(spotifyUserDataItem !== undefined);
+                    if (spotifyUserDataItem) {
+                        const { name, avatar } = JSON.parse(spotifyUserDataItem);
+                        setUser({ name, avatar });
+                    }
+                    setIsLoading(false);
+                } catch (e) {
                     setIsLoggedIn(false);
                 }
-                setIsLoading(false);
-            } catch (e) {
-                setIsLoggedIn(false);
-                setIsLoading(false);
             }
+            setIsLoading(false);
         }
         LoginCheck();
     }, [])

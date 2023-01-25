@@ -10,9 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "docker:build": "docker build -t aiapp-client .",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "docker:build": "docker build -t aiapp-client ."
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
@@ -26,27 +24,14 @@
     "@mantine/notifications": "^5.10.0",
     "@mantine/nprogress": "^5.10.1",
     "@material-ui/styles": "^4.11.5",
-    "@storybook/addon-actions": "^6.5.15",
-    "@storybook/addon-essentials": "^6.5.15",
-    "@storybook/addon-interactions": "^6.5.15",
-    "@storybook/addon-links": "^6.5.15",
-    "@storybook/builder-webpack5": "^6.5.15",
-    "@storybook/manager-webpack5": "^6.5.15",
-    "@storybook/react": "^6.5.15",
-    "@storybook/testing-library": "^0.0.13",
     "@tabler/icons": "^1.118.0",
-    "@types/cors": "^2.8.13",
-    "@types/lodash": "^4.14.191",
-    "@types/luxon": "^3.1.0",
-    "@types/node": "^18.11.18",
-    "@types/react": "18.0.15",
-    "@types/react-dom": "18.0.6",
     "babel-loader": "^8.3.0",
     "cors": "^2.8.5",
     "eslint": "8.21.0",
     "eslint-config-next": "^13.1.1",
     "eslint-plugin-storybook": "^0.6.10",
     "googleapis-common": "^6.0.4",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "luxon": "^3.2.0",
     "next": "^13.1.1",
@@ -60,5 +45,13 @@
     "swr": "^2.0.0",
     "typescript": "^4.9.4"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/lodash": "^4.14.191",
+    "@types/luxon": "^3.1.0",
+    "@types/node": "^18.11.18",
+    "@types/react": "18.0.27",
+    "@types/react-dom": "18.0.6"
+  }
 }
