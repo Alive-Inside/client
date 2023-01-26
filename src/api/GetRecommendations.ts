@@ -35,7 +35,7 @@ export default async function GetRecommendations(
     publicRuntimeConfig: { BACKEND_URL },
   } = getConfig();
   try {
-    const { jwt } = JSON.parse(localStorage.getItem("spotifyUserData"));
+    const { jwt } = localStorage.getItem("jwt");
     const response = await (
       await fetch(`${BACKEND_URL}/api/getRecommendations`, {
         method: "POST",
