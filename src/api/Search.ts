@@ -3,6 +3,8 @@ import Track from "../types/Track";
 import SearchedArtistsResponse from "../responses/SearchedArtistsResponse";
 import LoginRedirect from "../utils/login-redirect";
 import getConfig from "next/config";
+import SpotifyUserData from "../types/SpotifyUserData";
+import base64url from "base64url";
 
 export default async function Search<T>(
   query: string,
@@ -14,6 +16,7 @@ export default async function Search<T>(
     const {
       publicRuntimeConfig: { BACKEND_URL },
     } = getConfig();
+    const jwt = localStorage.getItem("jwt");
     const response = await (
       await fetch(
         `${BACKEND_URL}/api/search/${
@@ -22,6 +25,9 @@ export default async function Search<T>(
           options.limit && "&limit=" + options.limit
         }`,
         {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
           credentials: "include",
         }
       )

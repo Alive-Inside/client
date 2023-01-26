@@ -183,7 +183,7 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                 <ScrollArea.Autosize maxHeight={"60vh"} style={{ width: '50vh' }} viewportRef={viewport}>
                     {noResultsFound &&
                         <SpotifyRow>
-                            <Text style={{ marginLeft: '2em', width: '50vw' }}>No results found for &quot;{searchQuery}&quot;</Text>
+                            <Text style={{ marginLeft: '2em', width: '50vw' }}>No results found for &quot;{debouncedQuery}&quot;</Text>
                         </SpotifyRow>}
                     {searchType.item === 'track' &&
                         ((searchQuery.length === 0 || trackSearchResults.length === 0) && !(!isSearching && trackSearchResults.length === 0 && searchQuery.length > 0 && trackSearchResults.length === 0)) && tracks.map((track, i) => {
@@ -219,19 +219,23 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                     }
                     setArtistSearchResults(fakeArtistResults)
                 }
-
                 const results: any = await Search(query, spotifyUserData.countryCode, spotifyUserData.accessToken, { type: searchType.item === 'artist' ? 'artists' : 'tracks', limit: 5 });
-                if (results.length === 0) {
-                    setNoResultsFound(true);
-                }
                 if (results === undefined) {
                     showErrorNotification('Error searching')
+                    setArtistSearchResults([]);
+                    setTrackSearchResults([]);
                 } else {
-                    setNoResultsFound(false);
-                    if (searchType.item === 'track') {
-                        setTrackSearchResults(results as Track[]);
+                    if (results.length === 0) {
+                        setNoResultsFound(true);
+                        setArtistSearchResults([]);
+                        setTrackSearchResults([]);
                     } else {
-                        setArtistSearchResults(results as Artist[]);
+                        setNoResultsFound(false);
+                        if (searchType.item === 'track') {
+                            setTrackSearchResults(results as Track[]);
+                        } else {
+                            setArtistSearchResults(results as Artist[]);
+                        }
                     }
                 }
             } else {

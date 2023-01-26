@@ -30,8 +30,7 @@ export default function AppShell({ children }: { children: any }) {
     const router = useRouter();
 
     useEffect(() => {
-        async function decodeJWT() {
-            const jwt = window.location.href.split('jwt=')[1];
+        async function decodeJWT(jwt: string) {
             return await DecodeToken(jwt)
         };
         async function LoginCheck() {
@@ -42,7 +41,8 @@ export default function AppShell({ children }: { children: any }) {
                 router.replace('/');
             } else {
                 if (router.query.jwt) {
-                    const spotifyUserData: any = await decodeJWT();
+                    const spotifyUserData: any = await decodeJWT(router.query.jwt as string);
+                    localStorage.setItem('jwt', router.query.jwt as string)
                     localStorage.setItem('spotifyUserData', JSON.stringify(spotifyUserData))
                     setUser({ avatar: spotifyUserData.avatar, name: spotifyUserData.name });
                     router.replace('/');

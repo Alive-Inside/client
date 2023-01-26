@@ -5,9 +5,15 @@ import { DateTime } from "luxon";
 import LoginRedirect from "../utils/login-redirect";
 import { showErrorNotification } from "../utils/notifications";
 import getConfig from "next/config";
+import SpotifyUserData from "../types/SpotifyUserData";
+import base64url from "base64url";
 
-type Enumerate<N extends number, Acc extends number[] = []> =
-  Acc["length"] extends N ? Acc[number] : Enumerate<N, [...Acc, Acc["length"]]>;
+type Enumerate<
+  N extends number,
+  Acc extends number[] = []
+> = Acc["length"] extends N
+  ? Acc[number]
+  : Enumerate<N, [...Acc, Acc["length"]]>;
 
 type Range<F extends number, T extends number> = Exclude<
   Enumerate<T>,
@@ -29,12 +35,15 @@ export default async function GetRecommendations(
     publicRuntimeConfig: { BACKEND_URL },
   } = getConfig();
   try {
+    const { jwt } = JSON.parse(localStorage.getItem("spotifyUserData"));
     const response = await (
       await fetch(`${BACKEND_URL}/api/getRecommendations`, {
         method: "POST",
         body: JSON.stringify({ ...options, countryCode, targetYear, limit }),
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
       })
     ).json();
     if (response === undefined || response.error) {
