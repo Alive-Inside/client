@@ -40,7 +40,7 @@ export default function Questions({ isLoggedIn }) {
     const form = useForm<QuestionnaireFormValues>({
         initialValues: {
             eldersFirstName: '',
-            eldersBirthYear: 1960,
+            eldersBirthYear: 1950,
             musicalPreference: 'classical',
             firstSongHeard: DEFAULT_TRACK_VALUE,
             favoriteArtistsAsChild: DEFAULT_ARTISTS_VALUE,
@@ -113,7 +113,7 @@ export default function Questions({ isLoggedIn }) {
         },
         {
             backTwice: true, formType: 'shortAnswer', formValue: 'eldersMusicalMemories', element: <>
-                <PromptText>{`Name a memory triggered by music`} </PromptText> <TextInput autoFocus={true} autoComplete="off" size="lg" {...form.getInputProps('eldersMusicalMemories')} />
+                <PromptText>{`What songs can make you cry?`} </PromptText><PlaylistModule initialItems={getCurrentFormValue('eldersMusicalMemories')} searchType={{ item: 'track', multiple: true }} spotifyUserData={spotifyUserData} removeArtist={onRemoveTrack} addTrack={onAddTrack} />
             </>
         },
         {
@@ -121,9 +121,6 @@ export default function Questions({ isLoggedIn }) {
                 <PromptText>Which musicians did your parents listen to when you were growing up?</PromptText>
                 <PlaylistModule initialItems={getCurrentFormValue('musiciansParentsListenedTo')} key={'musiciansParentsListenedTo'} removeArtist={onRemoveArtist} addArtist={onAddArtist} searchType={{ item: 'artist', multiple: true }} spotifyUserData={spotifyUserData} />
             </>
-        },
-        {
-            formType: 'readonly', element: <PromptText>Your Song-list will be created from the artists and songs you add here. You can add more later.</PromptText>
         },
         {
             searchType: 'artist', question: "Who were your favorite artists as a teenager?", formType: 'searchInput', formValue: 'eldersFavoriteArtistsAsTeenager', element: <div key='eldersFavoriteArtistsAsTeenager'>
@@ -152,7 +149,7 @@ export default function Questions({ isLoggedIn }) {
         },
         {
             formType: 'readonly', element: <>
-                <PromptText>{"Congratulations!! You are done! Press"} <b>Next</b> {`to generate ${form.values.eldersFirstName}'s Song-list`}</PromptText>
+                <PromptText>{"Congratulations!! You are done! Your Song-list will be created from the artists and songs you add here. You can add more later. Press"} <b>Next</b> {`to generate ${form.values.eldersFirstName}'s Song-list`}</PromptText>
             </>
         },
         {

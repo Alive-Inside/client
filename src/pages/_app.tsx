@@ -34,7 +34,10 @@ export default function App(props: AppProps) {
         theme={{
           /** Put your mantine theme override here */
           colors: {
-            // ''
+            spotifyGreen: ['#1DB954'],
+            spotifyWhite: ['#FFFFFF'],
+            spotifyBlack: ['#191414']
+
           },
           colorScheme: "dark",
           globalStyles: theme => ({
