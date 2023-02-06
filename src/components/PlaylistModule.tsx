@@ -51,6 +51,7 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
     const largeScreen = useMediaQuery(LARGE_SCREEN);
 
     useEffect(() => {
+        console.log('tracks',tracks)
         if (searchType.item === 'track') {
             setTracks(initialItems as Track[])
         } else {
