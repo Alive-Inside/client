@@ -6,12 +6,13 @@ export default async function SendEmail(
   formQuestionsAndAnswers: { question: string; answer: string }[]
 ) {
   try {
+    const jwt = localStorage.getItem("jwt");
     const {
       publicRuntimeConfig: { BACKEND_URL },
     } = getConfig();
     await fetch(`${BACKEND_URL}/email`, {
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${jwt}` },
       method: "POST",
       body: JSON.stringify({ emails, formQuestionsAndAnswers }),
     });

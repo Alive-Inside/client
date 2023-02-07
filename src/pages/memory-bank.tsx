@@ -43,7 +43,7 @@ export default function MemoryBankPage() {
 
     async function onSubmit(emails) {
         try {
-            SendEmail(emails, formQuestionsAndAnswers.current);
+            await SendEmail(emails, formQuestionsAndAnswers.current);
             setEmailsSent(true);
             localStorage.setItem('emailsSent', JSON.stringify(true));
         } catch (e) {
