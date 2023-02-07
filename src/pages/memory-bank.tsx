@@ -44,9 +44,10 @@ export default function MemoryBankPage() {
         try {
             await SendEmail(emails, formQuestionsAndAnswers.current);
             setEmailsSent(true);
-            localStorage.setItem('emailsSent', JSON.stringify(true));
+            localStorage.setItem('emailsSent', "true");
         } catch (e) {
-
+            setEmailsSent(false);
+            localStorage.setItem('emailsSent', "false");
         }
     }
 
