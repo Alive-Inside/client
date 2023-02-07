@@ -12,7 +12,7 @@ export default async function SendEmail(
     } = getConfig();
     await fetch(`${BACKEND_URL}/email`, {
       credentials: "include",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${jwt}` },
+      headers: { Authorization: `Bearer ${jwt}` },
       method: "POST",
       body: JSON.stringify({ emails, formQuestionsAndAnswers }),
     });
