@@ -9,15 +9,19 @@ export default async function AddTracksToPlaylist(
   accessToken: string,
   position?: number
 ) {
-  const {
-    publicRuntimeConfig: { BACKEND_URL },
-  } = getConfig();
   try {
+    const jwt = localStorage.getItem("jwt");
+    const {
+      publicRuntimeConfig: { BACKEND_URL },
+    } = getConfig();
     const response = await (
-      await fetch(`${BACKEND_URL}/addTracksToPlaylist`, {
+      await fetch(`${BACKEND_URL}/api/addTracksToPlaylist`, {
         method: "POST",
         body: JSON.stringify({ playlistId, trackURIs, position }),
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
       })
     ).json();
     if (response.redirect) {
