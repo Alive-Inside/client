@@ -23,7 +23,7 @@ export default async function GetTrack(
       mp3PreviewUrl: response.preview_url,
       id: response.id,
       url: response.external_urls.spotify,
-      title: response.name as string,
+    title: response.name as string,
       uri: response.uri as string,
       artist: {
         id: response.artists[0].id,

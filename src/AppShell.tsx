@@ -52,7 +52,7 @@ export default function AppShell({ children }: { children: any }) {
                         if (!spotifyUserDataItem) {
                         } else {
                             const { name, avatar } = JSON.parse(spotifyUserDataItem);
-                            setUser({ name, avatar });
+                            setUser({ name, avatar: avatar.url });
                         }
                         setIsLoading(false);
                     } catch (e) {
