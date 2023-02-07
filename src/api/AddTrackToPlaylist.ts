@@ -8,7 +8,6 @@ export default async function AddTracksToPlaylist(
   accessToken: string,
   position?: number
 ) {
-  console.log("access token", accessToken);
   try {
     const response = await (
       await fetch(

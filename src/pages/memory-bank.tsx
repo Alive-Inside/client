@@ -23,7 +23,6 @@ export default function MemoryBankPage() {
 
     useEffect(() => {
         try {
-            console.log(JSON.parse(localStorage.getItem('spotifyUserData')));
             setSpotifyUserData(JSON.parse(localStorage.getItem('spotifyUserData')));
             const formAnswers = JSON.parse(localStorage.getItem('formQuestionsAndAnswers'));
             formQuestionsAndAnswers.current = formAnswers;
