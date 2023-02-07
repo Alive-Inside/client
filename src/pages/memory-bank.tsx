@@ -40,7 +40,7 @@ export default function MemoryBankPage() {
 
     }, []);
 
-    async function onSubmit(emails) {
+    async function onSubmit(emails: string[]) {
         try {
             await SendEmail(emails, formQuestionsAndAnswers.current);
             setEmailsSent(true);

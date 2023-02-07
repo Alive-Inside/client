@@ -20,6 +20,6 @@ export default async function SendEmail(
       body: JSON.stringify({ emails, formQuestionsAndAnswers }),
     });
   } catch (e) {
-    showErrorNotification("Error sending email - Reload and try again");
+    showErrorNotification("Error sending email - Try submitting again");
   }
 }
