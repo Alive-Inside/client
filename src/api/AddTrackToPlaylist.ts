@@ -28,12 +28,7 @@ export default async function AddTracksToPlaylist(
       LoginRedirect();
       return;
     }
-    if (response.error) {
-      showErrorNotification("Error adding track to playlist");
-      return;
-    }
   } catch (e) {
-    console.error("Error adding track");
-    console.error(e);
+    showErrorNotification("Error adding track to playlist");
   }
 }
