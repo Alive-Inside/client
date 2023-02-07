@@ -4,25 +4,21 @@ import { getSpotifyHeaders } from "../../public/utils/utils";
 import GetAlbum from "./GetAlbum";
 import LoginRedirect from "../utils/login-redirect";
 import { showErrorNotification } from "../utils/notifications";
+import getConfig from "next/config";
 
 export default async function GetTrack(
   trackId: string,
   accessToken: string
 ): Promise<Track> {
   try {
+    const {
+      publicRuntimeConfig: { BACKEND_URL },
+    } = getConfig();
     const response = await (
-      await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
+      await fetch(`${BACKEND_URL}/api/getTrack/${trackId}`, {
         headers: getSpotifyHeaders(accessToken),
       })
     ).json();
-    if (response.redirect) {
-      LoginRedirect();
-      return;
-    }
-    if (response === undefined || response.error) {
-      showErrorNotification("Error loading recommendations");
-      return;
-    }
     return {
       mp3PreviewUrl: response.preview_url,
       id: response.id,
@@ -43,8 +39,5 @@ export default async function GetTrack(
         releaseYear: parseInt(response.album.release_date.split("-")[0]),
       },
     } as Track;
-  } catch (e) {
-    console.error("Error getting track");
-    console.error(e);
-  }
+  } catch (e) {}
 }
