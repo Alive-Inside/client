@@ -20,7 +20,7 @@ export default function App(props: AppProps) {
   return (
     <>
       <Head>
-        <title>Alive Inside</title>
+        <title>Alive Inside App</title>
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta
           name="viewport"
