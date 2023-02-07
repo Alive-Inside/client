@@ -21,7 +21,7 @@ export default function Questions({ isLoggedIn }) {
     const [generatedPlaylistTracks, setGeneratedPlaylistTracks] = useState<Track[]>([]);
     const largeScreen = useMediaQuery(LARGE_SCREEN);
     const { classes } = useStyles();
-    const [promptIndex, setPromptIndex] = useState(0);
+    const [promptIndex, setPromptIndex] = useState(16);
     const [spotifyUserData, setSpotifyUserData] = useState<SpotifyUserData>(null);
 
     useEffect(() => {
@@ -265,7 +265,7 @@ export default function Questions({ isLoggedIn }) {
         for (const chunk of chunkedSeeds) {
             const trackIDs = chunk.filter((item: any) => item.type === 'track').map(t => (t as any).id);
             const artistIDs = chunk.filter((item: any) => item.type === 'artist').map(a => (a as any).id);
-            const recommendations = await GetRecommendations(10, targetYear, spotifyUserData.countryCode, { duplicateTrackIDsToAvoid: cumulativeRecommendedTracks.map(crt => crt.id), trackIDs, artistIDs });
+            const recommendations = await GetRecommendations(5, spotifyUserData.countryCode, { targetYear, duplicateTrackIDsToAvoid: cumulativeRecommendedTracks.map(crt => crt.id), trackIDs, artistIDs });
             if (recommendations === undefined) return;
             cumulativeRecommendedTracks.push(...recommendations);
         }

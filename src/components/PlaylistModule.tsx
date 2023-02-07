@@ -82,14 +82,11 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
             newTracks.splice(insertIndex, 0, ...fakeTracks)
             setTracks(newTracks)
 
-            const trackResponse = await GetTrack(trackId, spotifyUserData.accessToken);
-            if (trackResponse === undefined) return;
-
-            const { album: { releaseYear } } = trackResponse;
-            const recommendedTracks = await GetRecommendations(5, releaseYear, spotifyUserData.countryCode, { trackIDs: [trackId], artistIDs: [tracks.find(t => t.id === trackId).artist.id], duplicateTrackIDsToAvoid: tracks.map(lT => lT.id) });
+            const { album: { releaseYear } } = tracks.find(t => t.id === trackId);
+            const recommendedTracks = await GetRecommendations(5, spotifyUserData.countryCode, { targetYear: releaseYear, trackIDs: [trackId], onlyIncludeFromArtistID: tracks.find(t => t.id === trackId).artist.id, duplicateTrackIDsToAvoid: tracks.map(lT => lT.id) });
             if (recommendedTracks === undefined) return;
 
-            newTracks.splice(insertIndex, 5, ...recommendedTracks)
+            newTracks.splice(insertIndex, 5, ...recommendedTracks);
             setTracks(newTracks)
 
             if (spotifyPlaylist !== null) await AddTracksToPlaylist(spotifyPlaylist.id, recommendedTracks.map(t => t.uri), spotifyUserData.accessToken, insertIndex);

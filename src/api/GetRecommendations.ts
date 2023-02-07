@@ -22,13 +22,14 @@ type Range<F extends number, T extends number> = Exclude<
 
 export default async function GetRecommendations(
   limit: Range<1, 101>,
-  targetYear: number,
   countryCode: string,
   options: {
-    artistIDs?: string[];
-    trackIDs?: string[];
+    targetYear?: number;
     genre?: string;
     duplicateTrackIDsToAvoid?: string[];
+    trackIDs?: string[];
+    artistIDs?: string[];
+    onlyIncludeFromArtistID?: string;
   }
 ): Promise<Track[]> {
   const {
@@ -39,7 +40,12 @@ export default async function GetRecommendations(
     const response = await (
       await fetch(`${BACKEND_URL}/api/getRecommendations`, {
         method: "POST",
-        body: JSON.stringify({ ...options, countryCode, targetYear, limit }),
+        body: JSON.stringify({
+          ...options,
+          countryCode,
+          targetYear: options.targetYear,
+          limit,
+        }),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,
