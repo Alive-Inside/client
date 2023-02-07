@@ -1,4 +1,5 @@
 import base64url from "base64url";
+import getConfig from "next/config";
 import LoginRedirect from "../utils/login-redirect";
 import { showErrorNotification } from "../utils/notifications";
 
@@ -8,17 +9,16 @@ export default async function AddTracksToPlaylist(
   accessToken: string,
   position?: number
 ) {
+  const {
+    publicRuntimeConfig: { BACKEND_URL },
+  } = getConfig();
   try {
     const response = await (
-      await fetch(
-        `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${trackURIs.join(
-          ","
-        )}${position ? `&position=${position}` : ""}`,
-        {
-          method: "POST",
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      )
+      await fetch(`${BACKEND_URL}/addTracksToPlaylist`, {
+        method: "POST",
+        body: JSON.stringify({ playlistId, trackURIs, position }),
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
     ).json();
     if (response.redirect) {
       LoginRedirect();
