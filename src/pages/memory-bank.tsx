@@ -23,7 +23,6 @@ export default function MemoryBankPage() {
 
     useEffect(() => {
         try {
-            console.log(JSON.parse(localStorage.getItem('spotifyUserData')));
             setSpotifyUserData(JSON.parse(localStorage.getItem('spotifyUserData')));
             const formAnswers = JSON.parse(localStorage.getItem('formQuestionsAndAnswers'));
             formQuestionsAndAnswers.current = formAnswers;
@@ -41,13 +40,14 @@ export default function MemoryBankPage() {
 
     }, []);
 
-    async function onSubmit(emails) {
+    async function onSubmit(emails: string[]) {
         try {
-            SendEmail(emails, formQuestionsAndAnswers.current);
+            await SendEmail(emails, formQuestionsAndAnswers.current);
             setEmailsSent(true);
-            localStorage.setItem('emailsSent', JSON.stringify(true));
+            localStorage.setItem('emailsSent', "true");
         } catch (e) {
-
+            setEmailsSent(false);
+            localStorage.setItem('emailsSent', "false");
         }
     }
 

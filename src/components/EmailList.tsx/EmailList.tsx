@@ -19,7 +19,6 @@ export default function EmailList({ initialEmails, onSubmit }: { initialEmails: 
     })
 
     useEffect(() => {
-        console.log(initialEmails)
     },[]);
 
     function addEmail() {

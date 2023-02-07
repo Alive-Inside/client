@@ -8,7 +8,7 @@ const nextConfig = {
     FULLSTORY_ORG_ID: 'o-1GSQSE-na1',
   },
   publicRuntimeConfig: {
-    BACKEND_URL: process.env.NODE_ENV === 'production' ? 'https://aif-app-server.herokuapp.com' : 'http://localhost:8080'
+    BACKEND_URL: process.env.NODE_ENV === 'production' ? 'https://api.aifapp.com' : 'http://localhost:8080'
   },
   images: {
     remotePatterns: [

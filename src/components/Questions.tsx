@@ -47,7 +47,7 @@ export default function Questions({ isLoggedIn }) {
             musiciansFromHeritage: DEFAULT_ARTISTS_VALUE,
             musiciansParentsListenedTo: DEFAULT_ARTISTS_VALUE,
             eldersFavoriteArtistsAsTeenager: DEFAULT_ARTISTS_VALUE,
-            eldersMusicalMemories: '',
+            songsThatMakeYouCry: DEFAULT_TRACKS_VALUE,
             mostEmotionalMusicMemory: '',
             songsWithConnectedLifeEvents: DEFAULT_TRACKS_VALUE,
             songsThatNobodyKnows: DEFAULT_TRACKS_VALUE,
@@ -112,14 +112,14 @@ export default function Questions({ isLoggedIn }) {
             </>
         },
         {
-            backTwice: true, formType: 'shortAnswer', formValue: 'eldersMusicalMemories', element: <>
-                <PromptText>{`What songs can make you cry?`} </PromptText><PlaylistModule initialItems={getCurrentFormValue('eldersMusicalMemories')} searchType={{ item: 'track', multiple: true }} spotifyUserData={spotifyUserData} removeArtist={onRemoveTrack} addTrack={onAddTrack} />
+            backTwice: true, formType: 'searchInput', formValue: 'songsThatMakeYouCry', element: <>
+                <PromptText>{`What songs can make you cry?`} </PromptText><PlaylistModule initialItems={getCurrentFormValue('songsThatMakeYouCry')} key={'songsThatMakeYouCry'} searchType={{ item: 'track', multiple: true }} spotifyUserData={spotifyUserData} removeTrack={onRemoveTrack} addTrack={onAddTrack} />
             </>
         },
         {
             searchType: 'artist', question: "Which musicians did your parents listen to when you were growing up?", formType: 'searchInput', formValue: 'musiciansParentsListenedTo', element: <>
                 <PromptText>Which musicians did your parents listen to when you were growing up?</PromptText>
-                <PlaylistModule initialItems={getCurrentFormValue('musiciansParentsListenedTo')} key={'musiciansParentsListenedTo'} removeArtist={onRemoveArtist} addArtist={onAddArtist} searchType={{ item: 'artist', multiple: true }} spotifyUserData={spotifyUserData} />
+                <PlaylistModule key={'musiciansParentsListenedTo'} initialItems={getCurrentFormValue('musiciansParentsListenedTo')} removeArtist={onRemoveArtist} addArtist={onAddArtist} searchType={{ item: 'artist', multiple: true }} spotifyUserData={spotifyUserData} />
             </>
         },
         {
@@ -149,7 +149,7 @@ export default function Questions({ isLoggedIn }) {
         },
         {
             formType: 'readonly', element: <>
-                <PromptText>{"Congratulations!! You are done! Your Song-list will be created from the artists and songs you add here. You can add more later. Press"} <b>Next</b> {`to generate ${form.values.eldersFirstName}'s Song-list`}</PromptText>
+                <PromptText>{"Congratulations!! You are done! Your Song-list will be created from the artists and songs you've added. You can add more later. Press"} <b>Next</b> {`to generate ${form.values.eldersFirstName}'s Song-list`}</PromptText>
             </>
         },
         {
@@ -265,7 +265,7 @@ export default function Questions({ isLoggedIn }) {
         for (const chunk of chunkedSeeds) {
             const trackIDs = chunk.filter((item: any) => item.type === 'track').map(t => (t as any).id);
             const artistIDs = chunk.filter((item: any) => item.type === 'artist').map(a => (a as any).id);
-            const recommendations = await GetRecommendations(10, targetYear, spotifyUserData.countryCode, { duplicateTrackIDsToAvoid: cumulativeRecommendedTracks.map(crt => crt.id), trackIDs, artistIDs });
+            const recommendations = await GetRecommendations(5, spotifyUserData.countryCode, { targetYear, duplicateTrackIDsToAvoid: cumulativeRecommendedTracks.map(crt => crt.id), trackIDs, artistIDs });
             if (recommendations === undefined) return;
             cumulativeRecommendedTracks.push(...recommendations);
         }

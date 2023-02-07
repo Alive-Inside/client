@@ -82,14 +82,11 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
             newTracks.splice(insertIndex, 0, ...fakeTracks)
             setTracks(newTracks)
 
-            const trackResponse = await GetTrack(trackId, spotifyUserData.accessToken);
-            if (trackResponse === undefined) return;
-
-            const { album: { releaseYear } } = trackResponse;
-            const recommendedTracks = await GetRecommendations(5, releaseYear, spotifyUserData.countryCode, { trackIDs: [trackId], artistIDs: [tracks.find(t => t.id === trackId).artist.id], duplicateTrackIDsToAvoid: tracks.map(lT => lT.id) });
+            const { album: { releaseYear } } = tracks.find(t => t.id === trackId);
+            const recommendedTracks = await GetRecommendations(5, spotifyUserData.countryCode, { targetYear: releaseYear, trackIDs: [trackId], onlyIncludeFromArtistID: tracks.find(t => t.id === trackId).artist.id, duplicateTrackIDsToAvoid: tracks.map(lT => lT.id) });
             if (recommendedTracks === undefined) return;
 
-            newTracks.splice(insertIndex, 5, ...recommendedTracks)
+            newTracks.splice(insertIndex, 5, ...recommendedTracks);
             setTracks(newTracks)
 
             if (spotifyPlaylist !== null) await AddTracksToPlaylist(spotifyPlaylist.id, recommendedTracks.map(t => t.uri), spotifyUserData.accessToken, insertIndex);
@@ -172,7 +169,7 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                             {!isSavingToSpotify ? <div style={{ display: 'flex', flexDirection: 'row' }}>
                                 <a target="_blank" rel="noreferrer" href={spotifyPlaylist?.url}>
                                     <Skeleton visible={loadingSpotifyPlaylist} radius={'xl'}>
-                                        <Button color='green' onClick={exportPlaylist} radius={'xl'} variant="outline" style={{ marginRight: '1rem' }}><IconBrandSpotify style={{ marginRight: '0.25rem' }} />{spotifyPlaylist ? "Open Playlist" : "Save to Spotify"}</Button>
+                                        <Button color='green' onClick={() => !spotifyPlaylist && exportPlaylist()} radius={'xl'} variant="outline" style={{ marginRight: '1rem' }}><IconBrandSpotify style={{ marginRight: '0.25rem' }} />{spotifyPlaylist ? "Open Playlist" : "Save to Spotify"}</Button>
                                     </Skeleton>
                                 </a>
                             </div> : <Loader style={{ marginLeft: '0.5em', marginRight: '1rem', marginTop: '0.75rem' }} variant="dots" color='green' />}

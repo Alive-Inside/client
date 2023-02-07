@@ -14,7 +14,7 @@ type QuestionnaireFormValues = {
   songsWithConnectedLifeEvents: Track[];
   songsThatNobodyKnows: Track[];
   songsWithEmotionalMemories: Track[];
-  eldersMusicalMemories: string;
+  songsThatMakeYouCry: Track[];
   canYouRecallFirstSongYouHeard: boolean;
   doYouHaveLifeEventsConnectedWithSongs: boolean;
   isEthnicMusicImportant: boolean;
