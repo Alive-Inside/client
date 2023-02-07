@@ -169,7 +169,7 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                             {!isSavingToSpotify ? <div style={{ display: 'flex', flexDirection: 'row' }}>
                                 <a target="_blank" rel="noreferrer" href={spotifyPlaylist?.url}>
                                     <Skeleton visible={loadingSpotifyPlaylist} radius={'xl'}>
-                                        <Button color='green' onClick={exportPlaylist} radius={'xl'} variant="outline" style={{ marginRight: '1rem' }}><IconBrandSpotify style={{ marginRight: '0.25rem' }} />{spotifyPlaylist ? "Open Playlist" : "Save to Spotify"}</Button>
+                                        <Button color='green' onClick={() => !spotifyPlaylist && exportPlaylist()} radius={'xl'} variant="outline" style={{ marginRight: '1rem' }}><IconBrandSpotify style={{ marginRight: '0.25rem' }} />{spotifyPlaylist ? "Open Playlist" : "Save to Spotify"}</Button>
                                     </Skeleton>
                                 </a>
                             </div> : <Loader style={{ marginLeft: '0.5em', marginRight: '1rem', marginTop: '0.75rem' }} variant="dots" color='green' />}
