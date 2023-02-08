@@ -6,15 +6,15 @@ import { useState } from "react";
 import { LARGE_SCREEN } from "../../constants";
 import Track, { LoadableTrack } from "../../types/Track";
 import SpotifyRow from "../SpotifyRow";
+import NO_SPOTIFY_AVATAR_IMAGE from '../../../public/no_spotify_avatar.png';
 
 export default function AddedTrackRow({ track, onAddFive, onRemoveTrack, isFinalPlaylist, fiveTracksLoading }: { fiveTracksLoading: boolean, track: LoadableTrack, onAddFive?: Function, onRemoveTrack: Function, isFinalPlaylist?: boolean }) {
     const largeScreen = useMediaQuery(LARGE_SCREEN)
-
     return (
         <SpotifyRow key={track.id}>
             {/* {!isFinalPlaylist && <IconPlayerPlay style={{ marginLeft: '0.5em' }} />} */}
             <Skeleton visible={track.loading === true}>
-                <Image style={{ marginLeft: '1.25rem' }} height={50} width={50} alt="album cover" src={track.album.smallImageUrl} />
+                <Image style={{ marginLeft: '1.25rem' }} height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
             </Skeleton>
             <Stack w={largeScreen ? '20rem' : '50vw'} style={{ lineHeight: 0 }}>
                 <Center>

@@ -16,7 +16,7 @@ export default function ArtistResults({ searchResults, existingArtistIDs, onAddA
                     <Center>
                         {/* <IconPlayerPlay style={{ marginLeft: '0.5em' }} /> */}
                         <Skeleton radius="xl" visible={artist.loading === true} circle>
-                            <Image style={{ borderRadius: '100px', marginRight: '1.25rem' }} height={50} width={50} alt="album cover" src={artist.smallImageUrl ?? NO_SPOTIFY_AVATAR_IMAGE} />
+                            <Image style={{ borderRadius: '100px', marginRight: '1.25rem' }} height={50} width={50} alt="album cover" src={artist.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
                         </Skeleton>
                         <Stack w={'100vw'} style={{ width: largeScreen ? '20rem' : '50vw' }}>
                             <Center>
