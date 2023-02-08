@@ -39,12 +39,7 @@ export default async function createPlaylist(
     //   });
     //   return;
     // }
-    const {
-      id,
-      external_urls: { spotify: playlistUrl },
-    } = response;
-
-    return { url: playlistUrl, id };
+    return response;
   } catch (e) {
     console.error("Error creating Playlist");
     console.error(e);
