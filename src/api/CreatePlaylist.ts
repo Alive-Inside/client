@@ -10,12 +10,13 @@ export default async function createPlaylist(
   const {
     publicRuntimeConfig: { BACKEND_URL },
   } = getConfig();
+  const jwt = localStorage.getItem("jwt");
   try {
     const response = await (
       await fetch(`${BACKEND_URL}/api/createPlaylist`, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `Bearer ${spotifyUserData.accessToken}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
         },
         method: "POST",
         body: JSON.stringify({
