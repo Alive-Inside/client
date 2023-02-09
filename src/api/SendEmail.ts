@@ -1,9 +1,11 @@
 import getConfig from "next/config";
+import Track from "../types/Track";
 import { showErrorNotification } from "../utils/notifications";
 
 export default async function SendEmail(
   emails: string[],
-  formQuestionsAndAnswers: { question: string; answer: string }[]
+  formQuestionsAndAnswers: { question: string; answer: string }[],
+  tracks: {title: string, artistName: string}[]
 ) {
   try {
     const jwt = localStorage.getItem("jwt");
@@ -17,7 +19,7 @@ export default async function SendEmail(
         Authorization: `Bearer ${jwt}`,
       },
       method: "POST",
-      body: JSON.stringify({ emails, formQuestionsAndAnswers }),
+      body: JSON.stringify({ emails, tracks, formQuestionsAndAnswers }),
     });
   } catch (e) {
     showErrorNotification("Error sending email - Try submitting again");
