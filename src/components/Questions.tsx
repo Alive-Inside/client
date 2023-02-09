@@ -179,6 +179,7 @@ export default function Questions({ isLoggedIn }) {
     ]
 
     function startAgain() {
+        form.reset();
         localStorage.removeItem('previouslyGeneratedTracks')
         localStorage.removeItem('formQuestionsAndAnswers')
         setGeneratedPlaylistTracks([]);
@@ -267,6 +268,7 @@ export default function Questions({ isLoggedIn }) {
         while (chunks * chunkSize <= 100) {
             chunkSize++;
         }
+        console.log(chunks, chunkSize)
         for (const chunk of chunkedSeeds) {
             const trackIDs = chunk.filter((item: any) => item.type === 'track').map(t => (t as any).id);
             const artistIDs = chunk.filter((item: any) => item.type === 'artist').map(a => (a as any).id);
