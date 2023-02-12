@@ -179,6 +179,7 @@ export default function Questions({ isLoggedIn }) {
     ]
 
     function startAgain() {
+        form.reset();
         localStorage.removeItem('previouslyGeneratedTracks')
         localStorage.removeItem('formQuestionsAndAnswers')
         setGeneratedPlaylistTracks([]);
@@ -262,10 +263,16 @@ export default function Questions({ isLoggedIn }) {
             seedTracks.map((t) => t.album.releaseYear).reduce((a, b) => a + b) /
             seedTracks.length;
 
+        let chunkSize = 5;
+        const chunks = chunkedSeeds.length
+        while (chunks * chunkSize <= 100) {
+            chunkSize++;
+        }
+        console.log(chunks, chunkSize)
         for (const chunk of chunkedSeeds) {
             const trackIDs = chunk.filter((item: any) => item.type === 'track').map(t => (t as any).id);
             const artistIDs = chunk.filter((item: any) => item.type === 'artist').map(a => (a as any).id);
-            const recommendations = await GetRecommendations(5, spotifyUserData.countryCode, { targetYear, duplicateTrackIDsToAvoid: cumulativeRecommendedTracks.map(crt => crt.id), trackIDs, artistIDs });
+            const recommendations = await GetRecommendations(chunkSize as 100, spotifyUserData.countryCode, { targetYear, duplicateTrackIDsToAvoid: cumulativeRecommendedTracks.map(crt => crt.id), trackIDs, artistIDs });
             if (recommendations === undefined) return;
             cumulativeRecommendedTracks.push(...recommendations);
         }
