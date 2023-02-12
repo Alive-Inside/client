@@ -1,8 +1,10 @@
-import { ActionIcon, Button, Center, Container, Loader, ScrollArea, Skeleton, Stack, Text, TextInput } from "@mantine/core";
+import { useTheme } from "@emotion/react";
+import { ActionIcon, Button, Center, Container, Loader, ScrollArea, Skeleton, Stack, Text, TextInput, useMantineTheme } from "@mantine/core";
 import { useClipboard, useDebouncedValue, useMediaQuery } from "@mantine/hooks";
 import { IconBrandSpotify, IconDeviceFloppy, IconSearch, IconX } from "@tabler/icons";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import SpotifyWebPlayer from "react-spotify-web-playback/lib";
 import AddTracksToPlaylist from "../api/AddTrackToPlaylist";
 import createPlaylist from "../api/CreatePlaylist";
 import GetRecommendations from "../api/GetRecommendations";
@@ -19,6 +21,7 @@ import ArtistResults from "./SearchResults/ArtistResults";
 import TrackResults from "./SearchResults/TrackResults";
 import SpotifyRow from "./SpotifyRow";
 
+export type CurrentlyPlaying = {trackId: string,  state: 'playing'| 'not playing'};
 const fakeTrack: LoadableTrack = {
     album: {
         id: '', largeImageUrl: '', name: 'Fake name', releaseYear: 1948,
@@ -30,6 +33,7 @@ const fakeTrack: LoadableTrack = {
 const fakeArtist: LoadableArtist = {
     id: '', largeImageUrl: '', name: '', nextPaginationUrl: '', smallImageUrl: '', loading: true
 }
+
 
 export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUserData, searchType, generatedPlaylistTracks: generatedTracks, isFinalPlaylist, addTrack, addArtist, removeTrack, removeArtist, initialItems }: { isLoadingTracks?: false, initialItems: (Track | Artist)[], formValues?: any, removeTrack?: Function, removeArtist?: Function, addTrack?: Function, addArtist?: Function, isFinalPlaylist?: boolean, generatedPlaylistTracks?: Track[], spotifyUserData: SpotifyUserData, searchType: { item: 'track' | 'artist', multiple: boolean } }) {
     const [tracks, setTracks] = useState<(Track & { loading?: boolean })[]>(generatedTracks ?? [fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack,]);
@@ -49,6 +53,9 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
     const clipboard = useClipboard();
     const viewport = useRef<HTMLDivElement>(null);
     const largeScreen = useMediaQuery(LARGE_SCREEN);
+    const [currentPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>(null);
+
+    const theme = useMantineTheme();
 
     useEffect(() => {
         if (searchType.item === 'track') {
@@ -150,6 +157,17 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
         }
     }, [searchQuery])
 
+    function onTogglePlaying(trackId: string) {
+        console.log('onTogglePlaying')
+        if (currentPlaying?.trackId === trackId) {
+            setCurrentlyPlaying({trackId,state: currentPlaying?.state === 'playing' ? 'not playing' : 'playing'})
+            console.log('stopping or pausing', trackId)
+        } else {
+            console.log('playing', trackId)
+            setCurrentlyPlaying({trackId, state: 'playing'});
+        }
+    }
+
     return (
         <div style={{ padding: '1em' }}>
             <div style={{ width: '', }}>
@@ -184,7 +202,7 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                         </SpotifyRow>}
                     {searchType.item === 'track' &&
                         ((searchQuery.length === 0 || trackSearchResults.length === 0) && !(!isSearching && trackSearchResults.length === 0 && searchQuery.length > 0 && trackSearchResults.length === 0)) && tracks.map((track, i) => {
-                            return <AddedTrackRow key={i} fiveTracksLoading={fiveTracksLoading.get(track.id)} onAddFive={onAddFive} isFinalPlaylist={isFinalPlaylist} track={track} onRemoveTrack={onRemoveTrack} />
+                            return <AddedTrackRow onTogglePlaying={(id) => {console.log('added track row');onTogglePlaying(id)}} currentlyPlaying={currentPlaying} key={i} fiveTracksLoading={fiveTracksLoading.get(track.id)} onAddFive={onAddFive} isFinalPlaylist={isFinalPlaylist} track={track} onRemoveTrack={onRemoveTrack} />
                         })
                     }
                     {searchType.item === 'artist' &&
@@ -192,11 +210,15 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                             return <AddedArtistRow key={i} artist={artist} onRemoveArtist={onRemoveArtist} />
                         })
                     }
-                    <TrackResults existingTrackIDs={tracks.map(t => t.id)} onAddTrack={onAddTrack} searchResults={trackSearchResults} />
-                    <ArtistResults onAddArtist={onAddArtist} existingArtistIDs={artists.map(a => a.id)} searchResults={artistSearchResults} />
+                    <TrackResults onTogglePlaying={id => {console.log('hit');onTogglePlaying}} currentlyPlaying={currentPlaying} existingTrackIDs={tracks.map(t => t.id)} onAddTrack={onAddTrack} searchResults={trackSearchResults} />
+                    <ArtistResults  onAddArtist={onAddArtist} existingArtistIDs={artists.map(a => a.id)} searchResults={artistSearchResults} />
                 </ScrollArea.Autosize>
             </div >
             {/* {spotifyUserData.isPremium && <SpotifyPlayer token={spotifyUserData.accessToken} uris={playlistUri} />} */}
+            <br/>
+            {currentPlaying && <Container mt={60}>
+                <SpotifyWebPlayer styles={{bgColor:  theme.globalStyles(theme).backgroundColor as string}} token={spotifyUserData.accessToken} uris={tracks.find(t => t.id=== currentPlaying?.trackId)?.uri} play={currentPlaying?.state==='playing'} callback={e => {if((currentPlaying !== null && (e.isPlaying && currentPlaying.state==='not playing') || (!e.isPlaying && currentPlaying.state==='playing'))) {onTogglePlaying(currentPlaying.trackId)}}} />
+                </Container>}
         </div >
     )
 
