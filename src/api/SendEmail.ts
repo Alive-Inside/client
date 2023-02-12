@@ -5,7 +5,7 @@ import { showErrorNotification } from "../utils/notifications";
 export default async function SendEmail(
   emails: string[],
   formQuestionsAndAnswers: { question: string; answer: string }[],
-  tracks: {title: string, artistName: string}[]
+  tracks: { title: string; artistName: string }[]
 ) {
   try {
     const jwt = localStorage.getItem("jwt");

@@ -14,21 +14,16 @@ export default async function AddTracksToPlaylist(
     const {
       publicRuntimeConfig: { BACKEND_URL },
     } = getConfig();
-    const response = await (
-      await fetch(`${BACKEND_URL}/api/addTracksToPlaylist`, {
-        method: "POST",
-        body: JSON.stringify({ playlistId, trackURIs, position }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
-        },
-      })
-    ).json();
-    if (response.redirect) {
-      LoginRedirect();
-      return;
-    }
+    await fetch(`${BACKEND_URL}/api/addTracksToPlaylist`, {
+      method: "POST",
+      body: JSON.stringify({ playlistId, trackURIs, position }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
   } catch (e) {
+    console.error(e);
     showErrorNotification("Error adding track to playlist");
   }
 }
