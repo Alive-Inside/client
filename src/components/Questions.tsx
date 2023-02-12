@@ -182,6 +182,7 @@ export default function Questions({ isLoggedIn }) {
         form.reset();
         localStorage.removeItem('previouslyGeneratedTracks')
         localStorage.removeItem('formQuestionsAndAnswers')
+        localStorage.removeItem('exportedSpotifyPlaylist')
         setGeneratedPlaylistTracks([]);
         setPromptIndex(0)
     }
