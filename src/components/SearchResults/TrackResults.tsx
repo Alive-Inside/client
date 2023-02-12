@@ -11,7 +11,7 @@ export default function TrackResults({ currentlyPlaying, onTogglePlaying, search
     return (
         <>
             {searchResults.map(track => {
-                return <SpotifyRow loading={track.loading} mp3PreviewUrl={track.mp3PreviewUrl} trackId={track.id} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} onTogglePlaying={onTogglePlaying} key={track.id}>
+                return <SpotifyRow track={track} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} onTogglePlaying={onTogglePlaying} key={track.id}>
                     <Skeleton visible={track.loading === true}>
                         <Image style={{ marginLeft: '1.25rem' }} height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR} />
                     </Skeleton>

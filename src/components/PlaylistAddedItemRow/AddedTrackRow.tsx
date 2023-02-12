@@ -12,7 +12,7 @@ import { CurrentlyPlaying } from "../PlaylistModule";
 export default function AddedTrackRow({ track, onAddFive, onRemoveTrack, isFinalPlaylist, fiveTracksLoading, currentlyPlaying, onTogglePlaying }: { currentlyPlaying: CurrentlyPlaying, onTogglePlaying: (trackID: string, mp3PreviewUrl: string) => void, fiveTracksLoading: boolean, track: LoadableTrack, onAddFive?: Function, onRemoveTrack: Function, isFinalPlaylist?: boolean }) {
     const largeScreen = useMediaQuery(LARGE_SCREEN)
     return (
-        <SpotifyRow mp3PreviewUrl={track.mp3PreviewUrl} trackId={track.id} loading={track.loading === true} onTogglePlaying={onTogglePlaying} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} key={track.id}>
+        <SpotifyRow track={track} onTogglePlaying={onTogglePlaying} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} key={track.id}>
             {/* {!isFinalPlaylist && <IconPlayerPlay style={{ marginLeft: '0.5em' }} />} */}
             <Skeleton visible={track.loading === true}>
                 <Image style={{ marginLeft: '1.25rem' }} height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />

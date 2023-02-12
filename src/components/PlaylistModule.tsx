@@ -164,6 +164,7 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
     }, [searchQuery])
 
     function onTogglePlaying(trackId: string, mp3PreviewUrl: string) {
+        console.log(mp3PreviewUrl)
         if (currentPlaying?.trackId === trackId) {
             setCurrentlyPlaying({ trackId, mp3PreviewUrl, state: currentPlaying?.state === 'playing' ? 'not playing' : 'playing' })
         } else {
