@@ -6,13 +6,12 @@ import Track, { LoadableTrack } from "../../types/Track";
 import SpotifyRow from "../SpotifyRow";
 import NO_SPOTIFY_AVATAR from '../../../public/no_spotify_avatar.png';
 import { CurrentlyPlaying } from "../PlaylistModule";
-export default function TrackResults({currentlyPlaying, onTogglePlaying, searchResults, onAddTrack: addTrack, existingTrackIDs }: {currentlyPlaying: CurrentlyPlaying, onTogglePlaying: (trackID: string) => void, searchResults: LoadableTrack[], existingTrackIDs: string[], onAddTrack: Function }) {
+export default function TrackResults({ currentlyPlaying, onTogglePlaying, searchResults, onAddTrack: addTrack, existingTrackIDs }: { currentlyPlaying: CurrentlyPlaying, onTogglePlaying: (trackID: string, mp3PreviewUrl: string) => void, searchResults: LoadableTrack[], existingTrackIDs: string[], onAddTrack: Function }) {
     const largeScreen = useMediaQuery(LARGE_SCREEN)
     return (
         <>
             {searchResults.map(track => {
-                return <SpotifyRow trackId={track.id} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state ==='playing'} onTogglePlaying={() => { onTogglePlaying(track.id)}} key={track.id}>
-                    {/* <IconPlayerPlay style={{ marginLeft: '0.5em' }} /> */}
+                return <SpotifyRow loading={track.loading} mp3PreviewUrl={track.mp3PreviewUrl} trackId={track.id} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} onTogglePlaying={onTogglePlaying} key={track.id}>
                     <Skeleton visible={track.loading === true}>
                         <Image style={{ marginLeft: '1.25rem' }} height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR} />
                     </Skeleton>

@@ -1,6 +1,5 @@
 import { Button, Center, Skeleton, Stack, Text, Tooltip } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { IconPlayerPlay } from "@tabler/icons";
 import Image from "next/image";
 import { LARGE_SCREEN } from "../../constants";
 import Artist, { LoadableArtist } from "../../types/Artist";
@@ -14,7 +13,6 @@ export default function ArtistResults({ searchResults, existingArtistIDs, onAddA
             {searchResults.map(artist => {
                 return <SpotifyRow key={artist.id}>
                     <Center>
-                        {/* <IconPlayerPlay style={{ marginLeft: '0.5em' }} /> */}
                         <Skeleton radius="xl" visible={artist.loading === true} circle>
                             <Image style={{ borderRadius: '100px', marginRight: '1.25rem' }} height={50} width={50} alt="album cover" src={artist.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
                         </Skeleton>

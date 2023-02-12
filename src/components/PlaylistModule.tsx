@@ -1,14 +1,11 @@
-import { useTheme } from "@emotion/react";
-import { ActionIcon, Button, Center, Container, Loader, ScrollArea, Skeleton, Stack, Text, TextInput, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Button, Container, Loader, ScrollArea, Skeleton, Text, TextInput, useMantineTheme } from "@mantine/core";
 import { useClipboard, useDebouncedValue, useMediaQuery } from "@mantine/hooks";
 import { IconBrandSpotify, IconDeviceFloppy, IconSearch, IconX } from "@tabler/icons";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import SpotifyWebPlayer from "react-spotify-web-playback/lib";
 import AddTracksToPlaylist from "../api/AddTrackToPlaylist";
 import createPlaylist from "../api/CreatePlaylist";
 import GetRecommendations from "../api/GetRecommendations";
-import GetTrack from "../api/GetTrack";
 import Search from "../api/Search";
 import { LARGE_SCREEN, SPOTIFY_SEARCH_DEBOUNCE_INTERVAL } from "../constants";
 import Artist, { LoadableArtist } from "../types/Artist";
@@ -20,8 +17,9 @@ import AddedTrackRow from "./PlaylistAddedItemRow/AddedTrackRow";
 import ArtistResults from "./SearchResults/ArtistResults";
 import TrackResults from "./SearchResults/TrackResults";
 import SpotifyRow from "./SpotifyRow";
+import ReactPlayer from "react-player/lazy";
 
-export type CurrentlyPlaying = {trackId: string,  state: 'playing'| 'not playing'};
+export type CurrentlyPlaying = { mp3PreviewUrl: string, trackId: string, state: 'playing' | 'not playing' };
 const fakeTrack: LoadableTrack = {
     album: {
         id: '', largeImageUrl: '', name: 'Fake name', releaseYear: 1948,
@@ -157,19 +155,19 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
         }
     }, [searchQuery])
 
-    function onTogglePlaying(trackId: string) {
-        console.log('onTogglePlaying')
+    function onTogglePlaying(trackId: string, mp3PreviewUrl: string) {
         if (currentPlaying?.trackId === trackId) {
-            setCurrentlyPlaying({trackId,state: currentPlaying?.state === 'playing' ? 'not playing' : 'playing'})
-            console.log('stopping or pausing', trackId)
+            setCurrentlyPlaying({ trackId, mp3PreviewUrl, state: currentPlaying?.state === 'playing' ? 'not playing' : 'playing' })
         } else {
-            console.log('playing', trackId)
-            setCurrentlyPlaying({trackId, state: 'playing'});
+            setCurrentlyPlaying({ trackId, mp3PreviewUrl, state: 'playing' });
         }
     }
 
     return (
         <div style={{ padding: '1em' }}>
+            {currentPlaying &&
+                <ReactPlayer style={{display:'none'}} onEnded={() => onTogglePlaying(currentPlaying.trackId, currentPlaying.mp3PreviewUrl)} url={currentPlaying.mp3PreviewUrl} playing={currentPlaying.state === 'playing'} />
+            }
             <div style={{ width: '', }}>
                 <Container mb={'md'} style={{ lineHeight: '1', display: 'flex', alignItems: 'center', height: '3.5rem', width: "100%", color: '#fff', backgroundImage: 'linear-gradient(rgba(0,0,0,0.6) 0px, border-box', backgroundColor: '#121212' }}>
                     <TextInput
@@ -202,7 +200,7 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                         </SpotifyRow>}
                     {searchType.item === 'track' &&
                         ((searchQuery.length === 0 || trackSearchResults.length === 0) && !(!isSearching && trackSearchResults.length === 0 && searchQuery.length > 0 && trackSearchResults.length === 0)) && tracks.map((track, i) => {
-                            return <AddedTrackRow onTogglePlaying={(id) => {console.log('added track row');onTogglePlaying(id)}} currentlyPlaying={currentPlaying} key={i} fiveTracksLoading={fiveTracksLoading.get(track.id)} onAddFive={onAddFive} isFinalPlaylist={isFinalPlaylist} track={track} onRemoveTrack={onRemoveTrack} />
+                            return <AddedTrackRow onTogglePlaying={onTogglePlaying} currentlyPlaying={currentPlaying} key={i} fiveTracksLoading={fiveTracksLoading.get(track.id)} onAddFive={onAddFive} isFinalPlaylist={isFinalPlaylist} track={track} onRemoveTrack={onRemoveTrack} />
                         })
                     }
                     {searchType.item === 'artist' &&
@@ -210,16 +208,13 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                             return <AddedArtistRow key={i} artist={artist} onRemoveArtist={onRemoveArtist} />
                         })
                     }
-                    <TrackResults onTogglePlaying={id => {console.log('hit');onTogglePlaying}} currentlyPlaying={currentPlaying} existingTrackIDs={tracks.map(t => t.id)} onAddTrack={onAddTrack} searchResults={trackSearchResults} />
-                    <ArtistResults  onAddArtist={onAddArtist} existingArtistIDs={artists.map(a => a.id)} searchResults={artistSearchResults} />
+                    <TrackResults onTogglePlaying={onTogglePlaying} currentlyPlaying={currentPlaying} existingTrackIDs={tracks.map(t => t.id)} onAddTrack={onAddTrack} searchResults={trackSearchResults} />
+                    <ArtistResults onAddArtist={onAddArtist} existingArtistIDs={artists.map(a => a.id)} searchResults={artistSearchResults} />
                 </ScrollArea.Autosize>
             </div >
-            {/* {spotifyUserData.isPremium && <SpotifyPlayer token={spotifyUserData.accessToken} uris={playlistUri} />} */}
-            <br/>
-            {currentPlaying && <Container mt={60}>
-                <SpotifyWebPlayer styles={{bgColor:  theme.globalStyles(theme).backgroundColor as string}} token={spotifyUserData.accessToken} uris={tracks.find(t => t.id=== currentPlaying?.trackId)?.uri} play={currentPlaying?.state==='playing'} callback={e => {if((currentPlaying !== null && (e.isPlaying && currentPlaying.state==='not playing') || (!e.isPlaying && currentPlaying.state==='playing'))) {onTogglePlaying(currentPlaying.trackId)}}} />
-                </Container>}
+            <br />
         </div >
+
     )
 
     async function search(query: string) {
