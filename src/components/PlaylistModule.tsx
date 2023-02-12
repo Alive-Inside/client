@@ -71,7 +71,15 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
 
     useEffect(() => {
         search(searchQuery);
-    }, [debouncedQuery])
+        setCurrentlyPlaying({ mp3PreviewUrl: currentPlaying?.mp3PreviewUrl, state: 'not playing', trackId: currentPlaying?.trackId })
+    }, [debouncedQuery, tracks])
+
+    useEffect(() => {
+        if (searchQuery.length === 0) {
+            setCurrentlyPlaying({ mp3PreviewUrl: currentPlaying?.mp3PreviewUrl, state: 'not playing', trackId: currentPlaying?.trackId })
+        }
+    }, [searchQuery])
+
 
     const onAddFive = async (trackId: string) => {
         try {
@@ -166,7 +174,7 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
     return (
         <div style={{ padding: '1em' }}>
             {currentPlaying &&
-                <ReactPlayer style={{display:'none'}} onEnded={() => onTogglePlaying(currentPlaying.trackId, currentPlaying.mp3PreviewUrl)} url={currentPlaying.mp3PreviewUrl} playing={currentPlaying.state === 'playing'} />
+                <ReactPlayer style={{ display: 'none' }} onEnded={() => onTogglePlaying(currentPlaying.trackId, currentPlaying.mp3PreviewUrl)} url={currentPlaying.mp3PreviewUrl} playing={currentPlaying.state === 'playing'} />
             }
             <div style={{ width: '', }}>
                 <Container mb={'md'} style={{ lineHeight: '1', display: 'flex', alignItems: 'center', height: '3.5rem', width: "100%", color: '#fff', backgroundImage: 'linear-gradient(rgba(0,0,0,0.6) 0px, border-box', backgroundColor: '#121212' }}>
