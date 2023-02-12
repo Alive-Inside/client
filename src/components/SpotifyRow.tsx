@@ -12,7 +12,7 @@ export default function SpotifyRow({ onTogglePlaying, playing = false, children,
     })
     const largeScreen = useMediaQuery(LARGE_SCREEN);
     return (<Flex mb={5} style={{ width: '100%', lineHeight: '1', alignItems: 'center', height: '3.5rem', color: '#fff', backgroundColor: '#121212' }}>
-        {track.id !== undefined &&
+        {track !== undefined &&
             <Skeleton visible={track.loading === true}>
                 <ActionIcon onClick={() => {
                     if (track.mp3PreviewUrl === null) {
