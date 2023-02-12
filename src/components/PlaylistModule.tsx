@@ -32,6 +32,7 @@ const fakeArtist: LoadableArtist = {
     id: '', largeImageUrl: '', name: '', nextPaginationUrl: '', smallImageUrl: '', loading: true
 }
 
+const searchLimit = 4;
 
 export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUserData, searchType, generatedPlaylistTracks: generatedTracks, isFinalPlaylist, addTrack, addArtist, removeTrack, removeArtist, initialItems }: { isLoadingTracks?: false, initialItems: (Track | Artist)[], formValues?: any, removeTrack?: Function, removeArtist?: Function, addTrack?: Function, addArtist?: Function, isFinalPlaylist?: boolean, generatedPlaylistTracks?: Track[], spotifyUserData: SpotifyUserData, searchType: { item: 'track' | 'artist', multiple: boolean } }) {
     const [tracks, setTracks] = useState<(Track & { loading?: boolean })[]>(generatedTracks ?? [fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack,]);
@@ -231,18 +232,18 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
             if (query.length > 0) {
                 if (searchType.item === 'track') {
                     let fakeTrackResults = [];
-                    for (let i = 0; i < 5; i++) {
+                    for (let i = 0; i < searchLimit; i++) {
                         fakeTrackResults.push({ ...fakeTrack, id: i });
                     }
                     setTrackSearchResults(fakeTrackResults);
                 } else {
                     let fakeArtistResults = [];
-                    for (let i = 0; i < 5; i++) {
+                    for (let i = 0; i < searchLimit; i++) {
                         fakeArtistResults.push({ ...fakeArtist, id: i });
                     }
                     setArtistSearchResults(fakeArtistResults)
                 }
-                const results: any = await Search(query, spotifyUserData.countryCode, spotifyUserData.accessToken, { type: searchType.item === 'artist' ? 'artists' : 'tracks', limit: 5 });
+                const results: any = await Search(query, spotifyUserData.countryCode, spotifyUserData.accessToken, { type: searchType.item === 'artist' ? 'artists' : 'tracks', limit: searchLimit });
                 if (results === undefined) {
                     showErrorNotification('Error searching')
                     setArtistSearchResults([]);
