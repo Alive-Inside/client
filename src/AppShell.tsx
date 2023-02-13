@@ -83,7 +83,7 @@ export default function AppShell({ children }: { children: any }) {
                         <NavbarLinkItem href="/app">
                             <Text>App</Text>
                         </NavbarLinkItem>
-                        <NavbarLinkItem href="http://www.aliveinside.us/donate">
+                        <NavbarLinkItem href="https://www.aliveinside.org/donate_now">
                             <>
                                 {/* <ActionIcon className={classes.navbarIcon} mr={10} autoFocus={true} radius={'sm'} color="green">
                                     <IconCurrencyDollar />
