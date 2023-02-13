@@ -15,11 +15,11 @@ export default function AddedTrackRow({ track, onAddFive, onRemoveTrack, isFinal
         <Center>
             <SpotifyRow track={track} onTogglePlaying={onTogglePlaying} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} key={track.id}>
                 <Skeleton visible={track.loading === true}>
-                    <Image style={{ marginLeft: '1.25rem' }} height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
+                    <Image height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
                 </Skeleton>
                 <Stack w={largeScreen ? '20rem' : '50vw'} style={{ lineHeight: 0 }}>
                     <Center>
-                        <div style={{ width: '100vw', marginLeft: '1rem', textAlign: 'left' }}>
+                        <div style={{ width: '100vw', marginLeft: '1.25rem', textAlign: 'left' }}>
                             <Skeleton w="70%" radius="sm" visible={track.loading === true}><Text w={200} truncate size='md'>{track.title}</Text></Skeleton><br />
                             <Skeleton mt={4} radius="sm" visible={track.loading === true} w={'30%'}><Text w={100} truncate style={{ color: '#b3b3b3' }} size='xs'>{track.artist.name}</Text></Skeleton>
                         </div>
