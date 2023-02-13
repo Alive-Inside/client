@@ -21,7 +21,7 @@ export default function Questions({ isLoggedIn }) {
     const [generatedPlaylistTracks, setGeneratedPlaylistTracks] = useState<Track[]>([]);
     const largeScreen = useMediaQuery(LARGE_SCREEN);
     const { classes } = useStyles();
-    const [promptIndex, setPromptIndex] = useState(16);
+    const [promptIndex, setPromptIndex] = useState(0);
     const [spotifyUserData, setSpotifyUserData] = useState<SpotifyUserData>(null);
 
     useEffect(() => {
