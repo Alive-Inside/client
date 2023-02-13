@@ -11,23 +11,23 @@ export default function TrackResults({ currentlyPlaying, onTogglePlaying, search
     return (
         <>
             {searchResults.map(track => {
-                return <Center>
+                return <Center mt={10}>
                     <SpotifyRow track={track} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} onTogglePlaying={onTogglePlaying} key={track.id}>
                         <Skeleton visible={track.loading === true}>
                             <Image height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR} />
                         </Skeleton>
-                        <Stack w={'100vw'} style={{ lineHeight: 0, width: largeScreen ? '20rem' : '50vw', }}>
-                            <Center>
+                        <Center>
+                            <Stack w={'100vw'} style={{ overflowX: 'hidden', lineHeight: 0, width: largeScreen ? '20rem' : '50vw', }}>
                                 <div style={{ width: '100vw', marginLeft: '1.25rem', textAlign: 'left' }}>
                                     <Skeleton visible={track.loading === true} w='70%'>
-                                        <Text w={200} truncate size='md'>{track.title}</Text><br />
+                                        <Text w={largeScreen ? '18rem' : '40vw'} truncate size='md'>{track.title}</Text><br />
                                     </Skeleton>
                                     <Skeleton visible={track.loading === true} mt={4} w={'30%'}>
-                                        <Text w={100} truncate style={{ color: '#b3b3b3', }} size='xs'>{track.artist.name}</Text>
+                                        <Text w={largeScreen ? '18rem' : '40vw'} truncate style={{ color: '#b3b3b3', }} size='xs'>{track.artist.name}</Text>
                                     </Skeleton>
                                 </div>
-                            </Center>
-                        </Stack>
+                            </Stack>
+                        </Center>
                         <Center>
                             <Skeleton radius={'xl'} visible={track.loading === true}>
                                 {existingTrackIDs.includes(track.id) ?

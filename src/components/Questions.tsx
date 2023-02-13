@@ -33,7 +33,11 @@ export default function Questions({ isLoggedIn }) {
         }
     }, [])
 
-    const PromptText = ({ children }) => { return (<Text style={{ marginBottom: '1rem' }} size='lg'>{children}</Text>) }
+    const PromptText = ({ children }) => {
+        return (
+            <Text style={{whiteSpace:'normal', marginBottom: '1rem' }} size={largeScreen ? 'lg' : 'md'}>{children}</Text>
+        )
+    }
 
     const getCurrentFormValue = formValue => form.values[formValue] as (Track | Artist)[];
 

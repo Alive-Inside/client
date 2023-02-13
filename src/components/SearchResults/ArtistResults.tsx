@@ -11,21 +11,21 @@ export default function ArtistResults({ searchResults, existingArtistIDs, onAddA
     return (
         <>
             {searchResults.map(artist => {
-                return <SpotifyRow key={artist.id}>
-                    <Center>
-                        <Skeleton radius="xl" visible={artist.loading === true} circle>
-                            <Image style={{ borderRadius: '100px', marginRight: '1.25rem' }} height={50} width={50} alt="album cover" src={artist.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
+                return <Center mt={10}>
+                    <SpotifyRow key={artist.id}>
+                        <Skeleton visible={artist.loading === true} circle>
+                            <Image style={{ borderRadius: '100px' }} height={50} width={50} alt="album cover" src={artist.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
                         </Skeleton>
-                        <Stack w={'100vw'} style={{ width: largeScreen ? '20rem' : '50vw' }}>
+                        <Stack w={'100vw'} style={{ lineHeight: 0, width: largeScreen ? '20rem' : '50vw' }}>
                             <Center>
-                                <div style={{ textAlign: 'left', width: '100vw', marginLeft: '1.25' }}>
+                                <div style={{ textAlign: 'left', width: '100vw', marginLeft: '1.25rem' }}>
                                     <Skeleton w={'70%'} visible={artist.loading === true}>
-                                        <Text truncate size='md'>{artist.name}</Text>
+                                        <Text w={largeScreen ? '18rem' : '40vw'} truncate size='md'>{artist.name}</Text>
                                     </Skeleton>
                                 </div>
                             </Center>
                         </Stack>
-                        <div style={{ display: 'flex', marginRight: '1em' }}>
+                        <Center>
                             <Skeleton radius={'xl'} visible={artist.loading === true}>
                                 {existingArtistIDs.includes(artist.id) ?
                                     <Tooltip radius={'xl'} label={`Already Added`}>
@@ -35,9 +35,9 @@ export default function ArtistResults({ searchResults, existingArtistIDs, onAddA
                                     <Button radius='xl' variant="outline" color="green" onClick={() => { onAddArtist(artist) }} size='xs' style={{ textAlign: 'center', marginRight: '1em' }}>Add</Button>
                                 }
                             </Skeleton>
-                        </div>
-                    </Center>
-                </SpotifyRow>
+                        </Center>
+                    </SpotifyRow>
+                </Center>
             })}
         </>
     )

@@ -12,7 +12,7 @@ import { CurrentlyPlaying } from "../PlaylistModule";
 export default function AddedTrackRow({ track, onAddFive, onRemoveTrack, isFinalPlaylist, fiveTracksLoading, currentlyPlaying, onTogglePlaying }: { currentlyPlaying: CurrentlyPlaying, onTogglePlaying: (trackID: string, mp3PreviewUrl: string) => void, fiveTracksLoading: boolean, track: LoadableTrack, onAddFive?: Function, onRemoveTrack: Function, isFinalPlaylist?: boolean }) {
     const largeScreen = useMediaQuery(LARGE_SCREEN)
     return (
-        <Center>
+        <Center mt={10}>
             <SpotifyRow track={track} onTogglePlaying={onTogglePlaying} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} key={track.id}>
                 <Skeleton visible={track.loading === true}>
                     <Image height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
@@ -20,8 +20,8 @@ export default function AddedTrackRow({ track, onAddFive, onRemoveTrack, isFinal
                 <Stack w={largeScreen ? '20rem' : '50vw'} style={{ lineHeight: 0 }}>
                     <Center>
                         <div style={{ width: '100vw', marginLeft: '1.25rem', textAlign: 'left' }}>
-                            <Skeleton w="70%" radius="sm" visible={track.loading === true}><Text w={200} truncate size='md'>{track.title}</Text></Skeleton><br />
-                            <Skeleton mt={4} radius="sm" visible={track.loading === true} w={'30%'}><Text w={100} truncate style={{ color: '#b3b3b3' }} size='xs'>{track.artist.name}</Text></Skeleton>
+                            <Skeleton w="70%" radius="sm" visible={track.loading === true}><Text w={largeScreen ? '18rem' : '40vw'} truncate size='md'>{track.title}</Text></Skeleton><br />
+                            <Skeleton mt={4} radius="sm" visible={track.loading === true} w={'30%'}><Text w={largeScreen ? '18rem' : '40vw'} truncate style={{ color: '#b3b3b3' }} size='xs'>{track.artist.name}</Text></Skeleton>
                         </div>
                     </Center>
                 </Stack>
