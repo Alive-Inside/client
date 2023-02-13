@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, Skeleton } from "@mantine/core";
+import { ActionIcon, Center, Flex, Skeleton } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks"
 import { IconPlayerPause, IconPlayerPlay, IconTriangle } from "@tabler/icons";
 import { LARGE_SCREEN } from "../constants"
@@ -11,7 +11,7 @@ export default function SpotifyRow({ onTogglePlaying, playing = false, children,
         const spotifyUserData = JSON.parse(localStorage.getItem('spotifyUserData'));
     })
     const largeScreen = useMediaQuery(LARGE_SCREEN);
-    return (<Flex mb={5} style={{ width: '100%', lineHeight: '1', alignItems: 'center', height: '3.5rem', color: '#fff', backgroundColor: '#121212' }}>
+    return (<Center>
         {track !== undefined &&
             <Skeleton visible={track.loading === true}>
                 <ActionIcon onClick={() => {
@@ -28,5 +28,5 @@ export default function SpotifyRow({ onTogglePlaying, playing = false, children,
             </Skeleton>
         }
         {children}
-    </Flex>)
+    </Center>)
 }
