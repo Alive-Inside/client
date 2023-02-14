@@ -44,7 +44,7 @@ export default function AppShell({ children }: { children: any }) {
                     const spotifyUserData: any = await decodeJWT(router.query.jwt as string);
                     localStorage.setItem('jwt', router.query.jwt as string)
                     localStorage.setItem('spotifyUserData', JSON.stringify(spotifyUserData))
-                    setUser({ avatar: spotifyUserData.avatar, name: spotifyUserData.name });
+                    setUser({ avatar: spotifyUserData.avatar.url, name: spotifyUserData.name });
                     router.replace('/');
                 } else {
                     try {
