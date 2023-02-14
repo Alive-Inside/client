@@ -49,10 +49,9 @@ export default function AppShell({ children }: { children: any }) {
                 } else {
                     try {
                         const spotifyUserDataItem = localStorage.getItem('spotifyUserData');
-                        if (!spotifyUserDataItem) {
-                        } else {
+                        if (spotifyUserDataItem) {
                             const { name, avatar } = JSON.parse(spotifyUserDataItem);
-                            setUser({ name, avatar: avatar.url });
+                            setUser({ name, avatar: avatar?.url ?? null });
                         }
                         setIsLoading(false);
                     } catch (e) {
