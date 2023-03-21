@@ -30,9 +30,27 @@ const useStyles = createStyles((theme) => ({
     },
 
     burger: {
-        [theme.fn.largerThan('sm')]: {
+        [theme.fn.largerThan('md')]: {
             display: 'none',
         },
+        height: HEADER_HEIGHT,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+
+    aliveInsideLogo: {
+        [theme.fn.smallerThan('md')]: {
+            display: 'none'
+        }
+    },
+
+    headerContainer: {
+        [theme.fn.smallerThan('md')]: {
+            marginLeft: '0'
+        },
+        marginLeft: 'auto'
     },
 
     links: {
@@ -41,8 +59,7 @@ const useStyles = createStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-
-        [theme.fn.smallerThan('sm')]: {
+        [theme.fn.smallerThan('md')]: {
             display: 'none',
         },
     },
@@ -101,7 +118,7 @@ export default function AppShell({ children }: { children: any }) {
 
     useEffect(() => {
         const activeIndex = mainLinks.findIndex(x => x.link === router.pathname);
-        setActive(activeIndex)
+        setActive(activeIndex);
     }, [router.pathname])
 
     const mainItems = mainLinks.map((item, index) => (
@@ -157,16 +174,16 @@ export default function AppShell({ children }: { children: any }) {
     return (
         <Header height={HEADER_HEIGHT} mb={120}>
             <Link href='/'>
-                <Image style={{ position: 'absolute', left: '20px', marginTop: '9px' }} src={AliveInsideLogo} alt="Alive Inside Logo" />
+                <Image className={classes.aliveInsideLogo} style={{ position: 'absolute', left: '20px', marginTop: '9px' }} src={AliveInsideLogo} alt="Alive Inside Logo" />
             </Link>
             <Flex>
-                <Container>
+                <Container className={classes.headerContainer}>
                     <div className={classes.links}>
                         <Group spacing={0} position="right" className={classes.mainLinks}>
                             {mainItems}
                         </Group>
                     </div>
-                    <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" />
+                    <Burger opened={opened} onClick={toggle} className={classes.burger} size="md" />
                 </Container>
                 <Flex style={{
                     display: 'flex',
