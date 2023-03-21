@@ -1,6 +1,6 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { MantineProvider } from "@mantine/core";
+import { BackgroundImage, MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from '@mantine/notifications';
 import '../../public/style.css'
 import AppShell from "../AppShell";
@@ -8,7 +8,7 @@ import SpotifyUserData from "../types/SpotifyUserData";
 import { useEffect, useState } from "react";
 import { NavigationProgress } from "@mantine/nprogress";
 import * as FullStory from '@fullstory/browser';
-
+import backgroundImage from '../../public/lady-with-headset.jpg'
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -36,8 +36,8 @@ export default function App(props: AppProps) {
           colors: {
             spotifyGreen: ['#1DB954'],
             spotifyWhite: ['#FFFFFF'],
-            spotifyBlack: ['#191414']
-
+            spotifyBlack: ['#191414'],
+            cardBackground: ['rgba(20,20,28,0.85)']
           },
           colorScheme: "dark",
           globalStyles: theme => ({
@@ -50,6 +50,9 @@ export default function App(props: AppProps) {
                 lg: 1200,
                 xl: 1400,
               },
+            },
+            text: {
+              color: 'rgb(217,214,209)'
             }
           })
         }}

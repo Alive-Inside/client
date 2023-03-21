@@ -15,7 +15,7 @@ import e from "cors";
 import DecodeToken from "./api/DecodeToken";
 import { useDisclosure } from "@mantine/hooks";
 
-const HEADER_HEIGHT = 60;
+export const HEADER_HEIGHT = 60;
 
 interface LinkProps {
     label: string;
