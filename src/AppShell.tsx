@@ -1,4 +1,4 @@
-import { ActionIcon, Anchor, AppShell as MantineAppShell, Aside, Burger, Button, Center, Container, createStyles, Flex, Footer, Group, Header, MediaQuery, Navbar, ScrollArea, Skeleton, Text, Title, Tooltip, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Anchor, AppShell as MantineAppShell, Aside, Burger, Button, Center, Container, createStyles, Flex, Footer, Group, Header, MediaQuery, Navbar, Paper, ScrollArea, Skeleton, Text, Title, Tooltip, Transition, useMantineTheme } from "@mantine/core";
 import { IconCurrencyDollar, IconFileDollar, IconHomeDollar, IconLogout } from "@tabler/icons";
 import Image from "next/image";
 import Link from "next/link";
@@ -38,6 +38,24 @@ const useStyles = createStyles((theme) => ({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+
+    dropdown: {
+        position: 'absolute',
+        top: HEADER_HEIGHT,
+        left: 0,
+        right: 0,
+        zIndex: 1,
+        borderTopRightRadius: 0,
+        borderTopLeftRadius: 0,
+        borderTopWidth: 0,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+
+        [theme.fn.largerThan('md')]: {
+            display: 'none',
+        },
     },
 
     aliveInsideLogo: {
@@ -113,7 +131,7 @@ export default function AppShell({ children }: { children: any }) {
     } = getConfig();
 
     const router = useRouter();
-    const mainLinks: LinkProps[] = [{ label: 'App', link: '/app' }, { label: 'How It Works', link: '/how-it-works' }, { label: 'Donate', link: 'https://www.aliveinside.org/donate_now' }, { label: 'Aliveinside.org', link: 'http://aliveinside.org' }]
+    const mainLinks: LinkProps[] = [{ label: 'Home', link: '/' }, { label: 'App', link: '/app' }, { label: 'How It Works', link: '/how-it-works' }, { label: 'Donate', link: 'https://www.aliveinside.org/donate_now' }, { label: 'Aliveinside.org', link: 'http://aliveinside.org' }]
     const [active, setActive] = useState(-1);
 
     useEffect(() => {
@@ -180,10 +198,18 @@ export default function AppShell({ children }: { children: any }) {
                 <Container className={classes.headerContainer}>
                     <div className={classes.links}>
                         <Group spacing={0} position="right" className={classes.mainLinks}>
-                            {mainItems}
+                            {mainItems.slice(1)}
                         </Group>
                     </div>
                     <Burger opened={opened} onClick={toggle} className={classes.burger} size="md" />
+
+                    <Transition transition="pop-top-right" duration={200} mounted={opened}>
+                        {(styles) => (
+                            <Paper className={classes.dropdown} withBorder style={styles}>
+                                {mainItems}
+                            </Paper>
+                        )}
+                    </Transition>
                 </Container>
                 <Flex style={{
                     display: 'flex',
