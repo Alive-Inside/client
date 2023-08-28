@@ -12,16 +12,17 @@ import Track from "../types/Track";
 import PlaylistModule from "./PlaylistModule";
 import QuestionnaireFormValues from "../types/QuestionnaireFormValues";
 import useStyles from "../styles";
-import { IconBrandSpotify } from "@tabler/icons";
 import Link from "next/link";
 import SpotifyLoginButton from "./SpotifyLoginButton";
+
+const testFinalPage = false
 
 export default function Questions({ isLoggedIn }) {
     const [isGeneratingPlaylist, setIsGeneratingPlaylist] = useState(false);
     const [generatedPlaylistTracks, setGeneratedPlaylistTracks] = useState<Track[]>([]);
     const largeScreen = useMediaQuery(LARGE_SCREEN);
     const { classes } = useStyles();
-    const [promptIndex, setPromptIndex] = useState(0);
+    const [promptIndex, setPromptIndex] = useState(process.env.NODE_ENV === 'production' ? 0 : testFinalPage ? 16 : 0 );
     const [spotifyUserData, setSpotifyUserData] = useState<SpotifyUserData>(null);
 
     useEffect(() => {
