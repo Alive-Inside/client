@@ -131,7 +131,7 @@ export default function AppShell({ children }: { children: any }) {
     } = getConfig();
 
     const router = useRouter();
-    const mainLinks: LinkProps[] = [{ label: 'Home', link: '/' }, { label: 'App', link: '/app' }, { label: 'How It Works', link: '/how-it-works' }, { label: 'Donate', link: 'https://www.aliveinside.org/donate_now' }, { label: 'Aliveinside.org', link: 'http://aliveinside.org' }]
+    const mainLinks: LinkProps[] = [{ label: 'Home', link: '/' }, { label: 'App', link: '/app' }, { label: 'How It Works', link: '/how-it-works' }, { label: 'Donate', link: 'https://aliveinside.org/posts/124120/donate' }, { label: 'Aliveinside.org', link: 'http://aliveinside.org' }]
     const [active, setActive] = useState(-1);
 
     useEffect(() => {
@@ -170,7 +170,7 @@ export default function AppShell({ children }: { children: any }) {
                     localStorage.setItem('jwt', router.query.jwt as string)
                     localStorage.setItem('spotifyUserData', JSON.stringify(spotifyUserData))
                     setUser({ avatar: spotifyUserData.avatar.url, name: spotifyUserData.name });
-                    router.replace('/');
+                    router.replace('/app');
                 } else {
                     try {
                         const spotifyUserDataItem = localStorage.getItem('spotifyUserData');

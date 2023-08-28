@@ -3,9 +3,9 @@ import SpotifyUserData from "../types/SpotifyUserData";
 import LoginRedirect from "../utils/login-redirect";
 
 export default async function createPlaylist(
+  eldersFirstName: string,
   eldersBirthYear: number,
-  musicalPreference: string,
-  spotifyUserData: SpotifyUserData
+  musicalPreference: string
 ) {
   const {
     publicRuntimeConfig: { BACKEND_URL },
@@ -20,7 +20,7 @@ export default async function createPlaylist(
         },
         method: "POST",
         body: JSON.stringify({
-          name: `${spotifyUserData.name} ${eldersBirthYear} ${musicalPreference}`,
+          name: `${eldersFirstName} ${eldersBirthYear} ${musicalPreference}`,
         }),
       })
     ).json();

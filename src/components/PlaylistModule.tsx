@@ -147,7 +147,7 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
 
     async function exportPlaylist() {
         setIsSavingToSpotify(true);
-        const { url, id } = await createPlaylist(formValues.eldersBirthYear, formValues.musicalPreference, spotifyUserData);
+        const { url, id } = await createPlaylist(formValues.eldersFirstName, formValues.eldersBirthYear, formValues.musicalPreference);
         setSpotifyPlaylist({ url, id })
         localStorage.setItem('exportedSpotifyPlaylist', JSON.stringify({ url, id }))
         await AddTracksToPlaylist(id, tracks.map(pT => pT.uri), spotifyUserData.accessToken);
@@ -178,7 +178,7 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                 <ReactPlayer style={{ display: 'none' }} onEnded={() => onTogglePlaying(currentPlaying.trackId, currentPlaying.mp3PreviewUrl)} url={currentPlaying.mp3PreviewUrl} playing={currentPlaying.state === 'playing'} />
             }
             <div style={{ width: '', }}>
-                <Container mb={'md'} style={{ lineHeight: '1', display: 'flex', alignItems: 'center', height: '3.5rem', width: "100%", color: '#fff', backgroundImage: 'linear-gradient(rgba(0,0,0,0.6) 0px, border-box', backgroundColor: '#121212' }}>
+                <Container mb={'md'} style={{ lineHeight: '1', display: 'flex', alignItems: 'center', height: '3.5rem', width: "100%", color: '#fff' }}>
                     <TextInput
                         autoFocus={true} size='md' style={{ margin: `${!isFinalPlaylist ? "0 auto" : "0 0 0 1rem"}` }} value={searchQuery} className='searchBar' autoComplete="off" onChange={(e) => { setSearchQuery(e.currentTarget.value); }} onKeyDown={e => { if (e.key === 'Enter') e.preventDefault(); }} icon={
                             isLoadingSearchQuery ? <Loader size={17} color="black" style={{ marginBottom: '3px' }} /> : <ActionIcon variant="transparent" style={{ marginLeft: '0.25rem', marginBottom: '0' }}>
@@ -205,7 +205,7 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                 <ScrollArea.Autosize maxHeight={"60vh"} style={{ width: '50vh' }} viewportRef={viewport}>
                     {noResultsFound &&
                         <SpotifyRow>
-                            <Text style={{ marginLeft: '2em', width: '50vw' }}>No results found for &quot;{debouncedQuery}&quot;</Text>
+                            <Text style={{ fontWeight: 'bold', wordWrap: 'break-word', width: '100%' }}>No results found for &quot;{debouncedQuery}&quot;</Text>
                         </SpotifyRow>}
                     {searchType.item === 'track' &&
                         ((searchQuery.length === 0 || trackSearchResults.length === 0) && !(!isSearching && trackSearchResults.length === 0 && searchQuery.length > 0 && trackSearchResults.length === 0)) && tracks.map((track, i) => {
