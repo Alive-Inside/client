@@ -29,3 +29,13 @@
 .alreadyInPlaylist>div>span>svg {
     display: none
 }
+
+.spotify-metadata-link:hover {
+    text-decoration: underline;
+    color: white;
+}
+
+.spotify-metadata-link {
+    text-decoration: none;
+    color: inherit;
+}

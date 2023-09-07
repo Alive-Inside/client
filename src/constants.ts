@@ -7,3 +7,7 @@ export const DEFAULT_TRACK_VALUE = [];
 export const REMOVE_RED = "#F03E3E";
 
 export const LARGE_SCREEN = "(min-width: 500px)";
+
+export const SPOTIFY_GREEN = "#1DB954";
+export const SPOTIFY_BLACK = "#191414";
+export const SPOTIFY_WHITE = '#FFFFFF'

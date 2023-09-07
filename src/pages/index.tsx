@@ -1,28 +1,21 @@
-import { BackgroundImage, Button, Card, Container, Group, Notification, Text, Title, useMantineTheme } from "@mantine/core";
-import { IconX } from "@tabler/icons";
+import { BackgroundImage, Button, Container, Group, Notification, Text, Title } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import useStyles from "../styles";
-import jwt from 'jsonwebtoken';
-import DecodeToken from "../api/DecodeToken";
+import { useState } from "react";
 import { showErrorNotification } from "../utils/notifications";
 import backgroundImage from '../../public/img/darkened_lady_with_headset.jpg'
-import { HEADER_HEIGHT } from "../AppShell";
 
 export default function IndexPage({ isLoggedIn, refreshToken, accessToken }) {
 
   const router = useRouter();
   const [showLoginNotification, setShowLoginNotification] = useState(true);
-  const { classes } = useStyles();
-  const { colors } = useMantineTheme();
 
   function hideNotification() {
     setShowLoginNotification(false);
   }
 
   return (
-    <BackgroundImage src={backgroundImage.src} style={{ marginTop:'-1vh', height: '93.5vh' }}>
+    <BackgroundImage src={backgroundImage.src} style={{ marginTop: '-1vh', height: '93.5vh' }}>
       {/* {router.query.redirect && showLoginNotification && <Notification onClick={hideNotification} icon={<IconX size={18} />} color="red">
         Please login
       </Notification>} */}

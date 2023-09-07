@@ -15,7 +15,10 @@ interface Track {
     releaseYear: number;
     id: string;
     name: string;
+    url: string;
+    uri: string;
   };
+  fake?: boolean;
 }
 
 export default Track;

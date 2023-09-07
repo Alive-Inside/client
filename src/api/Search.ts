@@ -8,7 +8,7 @@ import base64url from "base64url";
 
 export default async function Search<T>(
   query: string,
-  country: string,
+  market: string,
   accessToken: string,
   options: { limit?: number; type?: "tracks" | "artists" }
 ): Promise<T> {
@@ -21,7 +21,7 @@ export default async function Search<T>(
       await fetch(
         `${BACKEND_URL}/api/search/${
           options.type ?? "tracks"
-        }?query=${query}&country=${country}${
+        }?query=${query}&market=${market}${
           options.limit && "&limit=" + options.limit
         }`,
         {

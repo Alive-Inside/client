@@ -1,16 +1,15 @@
-import { Button, useMantineColorScheme, useMantineTheme } from "@mantine/core";
+import { Button, Image, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import { IconBrandSpotify } from "@tabler/icons";
 import getConfig from "next/config";
 import Link from "next/link";
+import { SPOTIFY_BLACK, SPOTIFY_GREEN } from "../constants";
+import SpotifyLogo from '../../public/img/Spotify_Logo_RGB_Green.png';
 
-export default function SpotifyLoginButton({ redirectToApp = false }) {
+export default function SpotifyLoginButton() {
   const {
     publicRuntimeConfig: { BACKEND_URL },
   } = getConfig();
 
-  const { colors: { spotifyGreen, spotifyBlack} } = useMantineTheme();
 
-  const getColor = (color: 'green' | 'black') => color === 'green' ? spotifyGreen[0] : spotifyBlack[0]
-
-  return <Button bg={getColor('black')} fullWidth onClick={() => { window.location.href = `${BACKEND_URL}/auth/login?redirectToApp=${redirectToApp}` }}  variant="outline" styles={theme => ({'root': {'color': getColor('green'), borderColor: getColor('green')}})}><IconBrandSpotify style={{ marginRight: '5px' }} />Login with Spotify</Button>
+  return <Button bg={SPOTIFY_BLACK} fullWidth onClick={() => { window.location.href = `${BACKEND_URL}/auth/login` }} variant="outline" style={{color: SPOTIFY_GREEN, borderColor: SPOTIFY_GREEN }}>Log in with <Image style={{ height: '70px', width: '70px', marginTop: '49px', marginLeft: '5px' }} src={SpotifyLogo.src} /></Button>
 } 

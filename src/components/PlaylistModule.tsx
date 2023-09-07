@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Container, Loader, ScrollArea, Skeleton, Text, TextInput, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Button, Center, Container, Image, Loader, Paper, ScrollArea, Skeleton, Text, TextInput, Tooltip, useMantineTheme } from "@mantine/core";
 import { useClipboard, useDebouncedValue, useMediaQuery } from "@mantine/hooks";
 import { IconBrandSpotify, IconDeviceFloppy, IconSearch, IconX } from "@tabler/icons";
 import Link from "next/link";
@@ -12,24 +12,28 @@ import Artist, { LoadableArtist } from "../types/Artist";
 import SpotifyUserData from "../types/SpotifyUserData";
 import Track, { LoadableTrack } from "../types/Track";
 import { showErrorNotification } from "../utils/notifications";
-import AddedArtistRow from "./PlaylistAddedItemRow/AddedArtistRow";
-import AddedTrackRow from "./PlaylistAddedItemRow/AddedTrackRow";
-import ArtistResults from "./SearchResults/ArtistResults";
-import TrackResults from "./SearchResults/TrackResults";
+import AddedArtistRow from "./SpotifyResults/PlaylistAddedItemRow/AddedArtistRow";
+import AddedTrackRow from "./SpotifyResults/PlaylistAddedItemRow/AddedTrackRow";
 import SpotifyRow from "./SpotifyRow";
 import ReactPlayer from "react-player/lazy";
+import TrackResults from "./SpotifyResults/SearchResults/TrackResults";
+import ArtistResults from "./SpotifyResults/SearchResults/ArtistResults";
+import { OnProgressProps } from "react-player/base";
+import SpotifyIcon from '../../public/img/Spotify_Icon_RGB_Green.png';
+import SpotifyLogo from '../../public/img/Spotify_Logo_RGB_Green.png';
 
-export type CurrentlyPlaying = { mp3PreviewUrl: string, trackId: string, state: 'playing' | 'not playing' };
+export type CurrentlyPlaying = { mp3PreviewUrl: string, trackId: string, state: 'playing' | 'not playing' | 'frame' | 'initial buffer' | 'buffering' };
 const fakeTrack: LoadableTrack = {
     album: {
         id: '', largeImageUrl: '', name: 'Fake name', releaseYear: 1948,
-        smallImageUrl: '',
+        smallImageUrl: '', uri: '', url: ''
     }, artist: { id: '', name: 'Fake artist', url: '' }, id: '', mp3PreviewUrl: '', title: 'Fake title', uri: '', url: '',
-    loading: true
+    loading: true,
+    fake: true
 }
 
 const fakeArtist: LoadableArtist = {
-    id: '', largeImageUrl: '', name: '', nextPaginationUrl: '', smallImageUrl: '', loading: true
+    fake: true, id: '', largeImageUrl: '', name: 'Fake Artist', nextPaginationUrl: '', smallImageUrl: '', loading: true, url: ''
 }
 
 const searchLimit = 4;
@@ -52,9 +56,8 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
     const clipboard = useClipboard();
     const viewport = useRef<HTMLDivElement>(null);
     const largeScreen = useMediaQuery(LARGE_SCREEN);
-    const [currentPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>(null);
-
-    const theme = useMantineTheme();
+    const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>(null);
+    const [ringProgress, setRingProgress] = useState<number>(0);
 
     useEffect(() => {
         if (searchType.item === 'track') {
@@ -72,12 +75,12 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
 
     useEffect(() => {
         search(searchQuery);
-        setCurrentlyPlaying({ mp3PreviewUrl: currentPlaying?.mp3PreviewUrl, state: 'not playing', trackId: currentPlaying?.trackId })
+        setCurrentlyPlaying({ mp3PreviewUrl: currentlyPlaying?.mp3PreviewUrl, state: 'not playing', trackId: currentlyPlaying?.trackId })
     }, [debouncedQuery, tracks])
 
     useEffect(() => {
         if (searchQuery.length === 0) {
-            setCurrentlyPlaying({ mp3PreviewUrl: currentPlaying?.mp3PreviewUrl, state: 'not playing', trackId: currentPlaying?.trackId })
+            setCurrentlyPlaying({ mp3PreviewUrl: currentlyPlaying?.mp3PreviewUrl, state: 'not playing', trackId: currentlyPlaying?.trackId })
         }
     }, [searchQuery])
 
@@ -165,17 +168,36 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
     }, [searchQuery])
 
     function onTogglePlaying(trackId: string, mp3PreviewUrl: string) {
-        if (currentPlaying?.trackId === trackId) {
-            setCurrentlyPlaying({ trackId, mp3PreviewUrl, state: currentPlaying?.state === 'playing' ? 'not playing' : 'playing' })
+        if (currentlyPlaying?.trackId === trackId) {
+            if (currentlyPlaying.state !== 'not playing') {
+            }
+            setCurrentlyPlaying({ trackId, mp3PreviewUrl, state: currentlyPlaying?.state !== 'not playing' ? 'not playing' : 'initial buffer' })
         } else {
-            setCurrentlyPlaying({ trackId, mp3PreviewUrl, state: 'playing' });
+            setCurrentlyPlaying({ trackId, mp3PreviewUrl, state: 'initial buffer' });
         }
     }
 
+
+    function onEnd() {
+        onTogglePlaying(currentlyPlaying.trackId, currentlyPlaying.mp3PreviewUrl);
+        setRingProgress(0)
+    }
+
+    function onProgress(progress: OnProgressProps) {
+        const ringProgress = 100 * (progress.playedSeconds / progress.loadedSeconds)
+        setRingProgress(ringProgress)
+        if (currentlyPlaying.state === 'initial buffer') {
+            setCurrentlyPlaying({ ...currentlyPlaying, state: 'buffering', })
+        } else if (currentlyPlaying.state === 'buffering') {
+            setCurrentlyPlaying({ ...currentlyPlaying, state: 'playing', })
+        }
+    }
+
+
     return (
         <div style={{ padding: '1em' }}>
-            {currentPlaying &&
-                <ReactPlayer style={{ display: 'none' }} onEnded={() => onTogglePlaying(currentPlaying.trackId, currentPlaying.mp3PreviewUrl)} url={currentPlaying.mp3PreviewUrl} playing={currentPlaying.state === 'playing'} />
+            {currentlyPlaying &&
+                <ReactPlayer progressInterval={10} onProgress={onProgress} style={{ display: 'none' }} onEnded={onEnd} url={currentlyPlaying?.mp3PreviewUrl} playing={currentlyPlaying?.state !== 'not playing'} />
             }
             <div style={{ width: '', }}>
                 <Container mb={'md'} style={{ lineHeight: '1', display: 'flex', alignItems: 'center', height: '3.5rem', width: "100%", color: '#fff' }}>
@@ -194,32 +216,37 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                             {!isSavingToSpotify ? <div style={{ display: 'flex', flexDirection: 'row' }}>
                                 <a target="_blank" rel="noreferrer" href={spotifyPlaylist?.url}>
                                     <Skeleton visible={loadingSpotifyPlaylist} radius={'xl'}>
-                                        <Button color='green' onClick={() => !spotifyPlaylist && exportPlaylist()} radius={'xl'} variant="outline" style={{ marginRight: '1rem' }}><IconBrandSpotify style={{ marginRight: '0.25rem' }} />{spotifyPlaylist ? "Open Playlist" : "Save to Spotify"}</Button>
+                                        <Button color='green' onClick={() => !spotifyPlaylist && exportPlaylist()} radius={'xl'} variant="outline" style={{ marginRight: '1rem' }}>{spotifyPlaylist ? <><Image style={{ height: '21px', width: '21px', marginRight: '0.5rem' }} src={SpotifyIcon.src} /> Open Playlist </> : <>Save to <Image src={SpotifyLogo.src} style={{ height: '70px', width: '70px', marginLeft: '0.5rem', marginTop: '49px'}}/> </>}</Button>
                                     </Skeleton>
                                 </a>
                             </div> : <Loader style={{ marginLeft: '0.5em', marginRight: '1rem', marginTop: '0.75rem' }} variant="dots" color='green' />}
-                            <Link href='/memory-bank'><Button color='blue' radius={'xl'} variant="outline" style={{}}><IconDeviceFloppy style={{ marginRight: '0.25rem' }} />Save to Memory Bank</Button> </Link>
+                            <Link href='/memory-bank'><Button color='blue' radius={'xl'} variant="outline" style={{}}><IconDeviceFloppy style={{ marginRight: '0.5rem' }} />Save to Memory Bank</Button> </Link>
                         </div>
                     }
                 </Container>
-                <ScrollArea.Autosize maxHeight={"60vh"} style={{ width: '50vh' }} viewportRef={viewport}>
-                    {noResultsFound &&
-                        <SpotifyRow>
-                            <Text style={{ fontWeight: 'bold', wordWrap: 'break-word', width: '100%' }}>No results found for &quot;{debouncedQuery}&quot;</Text>
-                        </SpotifyRow>}
-                    {searchType.item === 'track' &&
-                        ((searchQuery.length === 0 || trackSearchResults.length === 0) && !(!isSearching && trackSearchResults.length === 0 && searchQuery.length > 0 && trackSearchResults.length === 0)) && tracks.map((track, i) => {
-                            return <AddedTrackRow onTogglePlaying={onTogglePlaying} currentlyPlaying={currentPlaying} key={i} fiveTracksLoading={fiveTracksLoading.get(track.id)} onAddFive={onAddFive} isFinalPlaylist={isFinalPlaylist} track={track} onRemoveTrack={onRemoveTrack} />
-                        })
-                    }
-                    {searchType.item === 'artist' &&
-                        ((searchQuery.length === 0 || artistSearchResults.length === 0) && !(!isSearching && artistSearchResults.length === 0 && searchQuery.length > 0 && artistSearchResults.length === 0)) && artists.map((artist, i) => {
-                            return <AddedArtistRow key={i} artist={artist} onRemoveArtist={onRemoveArtist} />
-                        })
-                    }
-                    <TrackResults onTogglePlaying={onTogglePlaying} currentlyPlaying={currentPlaying} existingTrackIDs={tracks.map(t => t.id)} onAddTrack={onAddTrack} searchResults={trackSearchResults} />
-                    <ArtistResults onAddArtist={onAddArtist} existingArtistIDs={artists.map(a => a.id)} searchResults={artistSearchResults} />
-                </ScrollArea.Autosize>
+
+                <Center>
+                    {(trackSearchResults.length || artistSearchResults.length || tracks.filter(x => !x.fake).length > 0 || artists.filter(x => !x.fake).length > 0) && <Paper shadow="xs" style={{ paddingLeft: '5px', paddingRight: '10px', paddingTop: '5px', paddingBottom: '5px', backgroundColor: 'rgba(25, 20, 20, 0.9)' }} w="100rem">
+                        <ScrollArea.Autosize maxHeight={"60vh"} style={{ width: '50vw' }} viewportRef={viewport}>
+                            {noResultsFound &&
+                                <SpotifyRow onTogglePlaying={onTogglePlaying}>
+                                    <Text style={{ fontWeight: 'bold', wordWrap: 'break-word', width: '100%' }}>No results found for &quot;{debouncedQuery}&quot;</Text>
+                                </SpotifyRow>}
+                            {searchType.item === 'track' &&
+                                ((searchQuery.length === 0 || trackSearchResults.length === 0) && !(!isSearching && trackSearchResults.length === 0 && searchQuery.length > 0 && trackSearchResults.length === 0)) && tracks.map((track, i) => {
+                                    return <AddedTrackRow ringProgress={ringProgress} onTogglePlaying={onTogglePlaying} currentlyPlaying={currentlyPlaying} key={i} fiveTracksLoading={fiveTracksLoading.get(track.id)} onAddFive={onAddFive} isFinalPlaylist={isFinalPlaylist} track={track} onRemoveTrack={onRemoveTrack} />
+                                })
+                            }
+                            {searchType.item === 'artist' &&
+                                ((searchQuery.length === 0 || artistSearchResults.length === 0) && !(!isSearching && artistSearchResults.length === 0 && searchQuery.length > 0 && artistSearchResults.length === 0)) && artists.map((artist, i) => {
+                                    return <AddedArtistRow key={i} artist={artist} onRemoveArtist={onRemoveArtist} />
+                                })
+                            }
+                            <TrackResults ringProgress={ringProgress} onTogglePlaying={onTogglePlaying} currentlyPlaying={currentlyPlaying} existingTrackIDs={tracks.map(t => t.id)} onAddTrack={onAddTrack} searchResults={trackSearchResults} />
+                            <ArtistResults onAddArtist={onAddArtist} existingArtistIDs={artists.map(a => a.id)} searchResults={artistSearchResults} />
+                        </ScrollArea.Autosize>
+                    </Paper>}
+                </Center>
             </div >
             <br />
         </div >

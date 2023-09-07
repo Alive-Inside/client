@@ -15,14 +15,14 @@ import useStyles from "../styles";
 import Link from "next/link";
 import SpotifyLoginButton from "./SpotifyLoginButton";
 
-const testFinalPage = false
+const testFinalPage = true
 
 export default function Questions({ isLoggedIn }) {
     const [isGeneratingPlaylist, setIsGeneratingPlaylist] = useState(false);
     const [generatedPlaylistTracks, setGeneratedPlaylistTracks] = useState<Track[]>([]);
     const largeScreen = useMediaQuery(LARGE_SCREEN);
     const { classes } = useStyles();
-    const [promptIndex, setPromptIndex] = useState(process.env.NODE_ENV === 'production' ? 0 : testFinalPage ? 16 : 0 );
+    const [promptIndex, setPromptIndex] = useState(process.env.NODE_ENV === 'production' ? 0 : testFinalPage ? 16 : 5);
     const [spotifyUserData, setSpotifyUserData] = useState<SpotifyUserData>(null);
 
     useEffect(() => {
@@ -89,7 +89,7 @@ export default function Questions({ isLoggedIn }) {
             </>
         },
         {
-            question: "What kind of Music do they like?", formType: 'multiSelect', formValue: 'musicalPreference', element: <><PromptText>What kind of Music do they like?</PromptText>
+            question: "What kind of music do they like?", formType: 'multiSelect', formValue: 'musicalPreference', element: <><PromptText>What kind of Music do they like?</PromptText>
                 <Select autoFocus={true} variant="filled" size="lg" onKeyDown={e => e.preventDefault()} onKeyDownCapture={handleNext} data={musicalPreferences} {...form.getInputProps('musicalPreference')} />
             </>
         },
@@ -118,7 +118,7 @@ export default function Questions({ isLoggedIn }) {
         },
         {
             backTwice: true, formType: 'searchInput', formValue: 'songsThatMakeYouCry', element: <>
-                <PromptText>{`What songs can make you cry?`} </PromptText><PlaylistModule initialItems={getCurrentFormValue('songsThatMakeYouCry')} key={'songsThatMakeYouCry'} searchType={{ item: 'track', multiple: true }} spotifyUserData={spotifyUserData} removeTrack={onRemoveTrack} addTrack={onAddTrack} />
+                <PromptText>{`Which songs can make you cry?`} </PromptText><PlaylistModule initialItems={getCurrentFormValue('songsThatMakeYouCry')} key={'songsThatMakeYouCry'} searchType={{ item: 'track', multiple: true }} spotifyUserData={spotifyUserData} removeTrack={onRemoveTrack} addTrack={onAddTrack} />
             </>
         },
         {
@@ -161,17 +161,17 @@ export default function Questions({ isLoggedIn }) {
             formType: 'none', element: <>
                 <Center>
                     <Grid>
+                        <Text style={{ textAlign: 'left' }} size={'lg'}><b>What happens now:</b> </Text>
+                        <Grid.Col span={7}>
+                            <List size={largeScreen ? 'lg' : 'xs'} style={{ textAlign: 'left' }} type="ordered">
+                                <List.Item>Listen to the songs with your Elder</List.Item>
+                                <List.Item>Remove unwanted songs</List.Item>
+                                <List.Item>Add more songs using the +5 button</List.Item>
+                                <List.Item>Find new artists using the search bar</List.Item>
+                                <List.Item>{"Save the list to The Alive Inside Memory Bank for future use"}</List.Item>
+                            </List>
+                        </Grid.Col>
                         <Center>
-                            <Grid.Col span={7}>
-                                <Text style={{ textAlign: 'left' }} size={'lg'}><b>What happens now:</b> </Text>
-                                <List size={largeScreen ? 'lg' : 'xs'} style={{ textAlign: 'left' }} type="ordered">
-                                    <List.Item>Listen to the songs with your Elder</List.Item>
-                                    <List.Item>Remove unwanted songs</List.Item>
-                                    <List.Item>Add more songs using the +5 button</List.Item>
-                                    <List.Item>Find new artists using the search bar</List.Item>
-                                    <List.Item>{"Save the list to The Alive Inside Memory Bank for future use"}</List.Item>
-                                </List>
-                            </Grid.Col>
                             <Grid.Col span={10}>
                                 {generatedPlaylistTracks.length > 0 && <PlaylistModule initialItems={generatedPlaylistTracks} formValues={form.values} isFinalPlaylist={true} searchType={{ item: 'track', multiple: true }} generatedPlaylistTracks={generatedPlaylistTracks} spotifyUserData={spotifyUserData} />}
                                 <Button onClick={startAgain} radius="xl" variant="white">Start again</Button>
@@ -313,8 +313,8 @@ export default function Questions({ isLoggedIn }) {
                         !isLoggedIn ?
                             <Center>
                                 <Card>
-                                    <Text>To use the app, please sign in with Spotify</Text><br />
-                                    <SpotifyLoginButton redirectToApp={true} />
+                                    <Text>To use the app, please log in</Text><br />
+                                    <SpotifyLoginButton />
                                 </Card>
                             </Center> :
                             <form>

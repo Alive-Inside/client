@@ -56,7 +56,6 @@ export default function MemoryBankPage() {
             {!emailsSent ? <>
                 {spotifyUserData &&
                     <>
-
                         <Title
                             p={'md'}
                             order={2}

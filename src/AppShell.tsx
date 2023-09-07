@@ -169,7 +169,7 @@ export default function AppShell({ children }: { children: any }) {
                     const spotifyUserData: any = await decodeJWT(router.query.jwt as string);
                     localStorage.setItem('jwt', router.query.jwt as string)
                     localStorage.setItem('spotifyUserData', JSON.stringify(spotifyUserData))
-                    setUser({ avatar: spotifyUserData.avatar.url, name: spotifyUserData.name });
+                    setUser({ avatar: spotifyUserData.avatar?.url ?? NO_SPOTIFY_AVATAR_IMAGE, name: spotifyUserData.name });
                     router.replace('/app');
                 } else {
                     try {
@@ -225,7 +225,7 @@ export default function AppShell({ children }: { children: any }) {
                                 <Center>
                                     <Image style={{ borderRadius: '100px' }} width={40} height={40} src={user.avatar ?? NO_SPOTIFY_AVATAR_IMAGE} alt="Avatar" />
                                     <Text size="sm" ml={'xs'}><b>{user.name}</b></Text>
-                                    <Tooltip radius={'xl'} label='Logout'>
+                                    <Tooltip radius={'sm'} label='Logout'>
                                         <Link href={`${BACKEND_URL}/logout`}>
                                             <ActionIcon color={'dark'} ml={"sm"}><IconLogout /></ActionIcon>
                                         </Link>

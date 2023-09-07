@@ -34,9 +34,6 @@ export default function App(props: AppProps) {
         theme={{
           /** Put your mantine theme override here */
           colors: {
-            spotifyGreen: ['#1DB954'],
-            spotifyWhite: ['#FFFFFF'],
-            spotifyBlack: ['#191414'],
             cardBackground: ['rgba(20,20,28,0.85)']
           },
           colorScheme: "dark",
