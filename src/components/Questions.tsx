@@ -25,6 +25,7 @@ export default function Questions({ isLoggedIn }) {
     const [promptIndex, setPromptIndex] = useState(process.env.NODE_ENV === 'production' ? 0 : testFinalPage ? 16 : 5);
     const [spotifyUserData, setSpotifyUserData] = useState<SpotifyUserData>(null);
 
+
     useEffect(() => {
         setSpotifyUserData(JSON.parse(localStorage.getItem('spotifyUserData')));
         const previouslyGeneratedTracks = JSON.parse(localStorage.getItem('previouslyGeneratedTracks'))
@@ -183,6 +184,9 @@ export default function Questions({ isLoggedIn }) {
         }
     ]
 
+    // Export Questions
+    // console.log(prompts.map(p => p.question).join('\n'))
+
     function startAgain() {
         form.reset();
         localStorage.removeItem('previouslyGeneratedTracks')
@@ -308,7 +312,7 @@ export default function Questions({ isLoggedIn }) {
     return (
         <>
             {
-                <div style={{ maxWidth: "40rem", textAlign: 'center', padding: '10px' }} className="question">
+                <div style={{ maxWidth: "50rem", textAlign: 'center', padding: '10px' }} className="question">
                     {
                         !isLoggedIn ?
                             <Center>

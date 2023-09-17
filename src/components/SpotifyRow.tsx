@@ -15,7 +15,7 @@ export default function SpotifyRow({ onTogglePlaying, buffering, ringProgress, p
     const largeScreen = useMediaQuery(LARGE_SCREEN);
 
     return (
-        <Flex align="center" ml="xs" justify="start" dir='left' mb="md" mt="md" style={{ flex: 1 }}>
+        <Flex align="center" ml="xs" justify="start" dir='left' mb="md" mt="md" >
             {track !== undefined && (
                 <Tooltip position="top" withinPortal={true} openDelay={PLAYBACK_DELAY} transition={TRANSITION_TYPE} label={playing ? "Pause" : `Play ${track.title} by ${track.artist.name}`} radius={TOOLTIP_BORDER_RADIUS}>
                     <ActionIcon

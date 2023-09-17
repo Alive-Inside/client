@@ -9,15 +9,15 @@ import { CurrentlyPlaying } from "../../PlaylistModule";
 import SpotifyRow from "../../SpotifyRow";
 import MetadataLink from "../../MetadataLink";
 
-export default function TrackResults({ currentlyPlaying, ringProgress, onTogglePlaying, searchResults, onAddTrack: addTrack, existingTrackIDs }: { ringProgress: number, currentlyPlaying: CurrentlyPlaying, onTogglePlaying: (trackID: string, mp3PreviewUrl: string) => void, searchResults: LoadableTrack[], existingTrackIDs: string[], onAddTrack: Function }) {
+export default function TrackResults({ currentlyPlaying, onTogglePlaying, searchResults, onAddTrack: addTrack, existingTrackIDs }: { currentlyPlaying: CurrentlyPlaying, onTogglePlaying: (trackID: string, mp3PreviewUrl: string) => void, searchResults: LoadableTrack[], existingTrackIDs: string[], onAddTrack: Function }) {
     const largeScreen = useMediaQuery(LARGE_SCREEN);
 
     return (
         <>
             {searchResults.map(track => {
                 return (
-                    <SpotifyRow ringProgress={ringProgress} track={track} buffering={['buffering', 'initial buffer'].includes(currentlyPlaying.state) && currentlyPlaying.trackId == track.id} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} onTogglePlaying={onTogglePlaying} key={track.id}>
-                        <Flex dir="left" justify="start" style={{ flex: 1 }}>
+                    <SpotifyRow ringProgress={track.id === currentlyPlaying.trackId ? currentlyPlaying.ringProgress : null} track={track} buffering={['buffering', 'initial buffer'].includes(currentlyPlaying.state) && currentlyPlaying.trackId == track.id} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} onTogglePlaying={onTogglePlaying} key={track.id}>
+                        <Flex dir="left" justify="start" align={'center'} style={{ flex: 1 }}>
                             <div style={{ position: 'relative', marginLeft: '0.5rem' }}>
                                 {track.loading && (
                                     <Skeleton
@@ -36,14 +36,14 @@ export default function TrackResults({ currentlyPlaying, ringProgress, onToggleP
                                     </a>
                                 </Tooltip>
                             </div>
-                            <Stack w={'100vw'} style={{ overflowX: 'hidden', lineHeight: 0, width: largeScreen ? '45rem' : '50vw', }}>
-                                <div style={{ width: '60vw', marginLeft: '1.25rem', textAlign: 'left' }}>
-                                    <Skeleton visible={track.loading === true} w='70%'>
-                                        <Text w={largeScreen ? '60rem' : '40vw'} truncate size='md'>
-                                            <span style={{ color: 'white' }}>
+                            <Stack  style={{ maxWidth: "100%", overflowX: 'hidden' }}>
+                                <div style={{ paddingLeft: '1.25rem', textAlign: 'left' }}>
+                                    <Skeleton visible={track.loading === true} w='100%'>
+                                        <div style={{width:"100%"}}>
+                                            <span style={{ color: 'white', maxWidth: '30%', overflow: 'hidden' }}>
                                                 <MetadataLink isTitle={true} href={track.url}>{track.title}</MetadataLink>
                                             </span>
-                                            &nbsp;•&nbsp;
+                                            <span>&nbsp;•&nbsp;</span>
                                             <MetadataLink href={track.album.url}>
                                                 <Tooltip withinPortal={true} position="top" radius="sm" openDelay={1250} transition={"fade"} transitionDuration={300} closeDelay={0} label={track.album.name}>
                                                     <span style={{ fontSize: '14px' }}>
@@ -51,7 +51,7 @@ export default function TrackResults({ currentlyPlaying, ringProgress, onToggleP
                                                     </span>
                                                 </Tooltip>
                                             </MetadataLink>
-                                        </Text>
+                                        </div>
                                         <br />
                                     </Skeleton>
                                     <Skeleton visible={track.loading === true} mt={4} w={'30%'}>
