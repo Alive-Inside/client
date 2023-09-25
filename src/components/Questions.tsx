@@ -174,8 +174,10 @@ export default function Questions({ isLoggedIn }) {
                         </Grid.Col>
                         <Center>
                             <Grid.Col span={10}>
-                                {generatedPlaylistTracks.length > 0 && <PlaylistModule initialItems={generatedPlaylistTracks} formValues={form.values} isFinalPlaylist={true} searchType={{ item: 'track', multiple: true }} generatedPlaylistTracks={generatedPlaylistTracks} spotifyUserData={spotifyUserData} />}
-                                <Button onClick={startAgain} radius="xl" variant="white">Start again</Button>
+                                {generatedPlaylistTracks.length > 0 && <PlaylistModule initialItems={generatedPlaylistTracks} formValues={form.values} isFinalPlaylist={true} searchType={{ item: 'track', multiple: true }} generatedPlaylistTracks={generatedPlaylistTracks} spotifyUserData={spotifyUserData}>
+                                    <Button onClick={startAgain} radius="xl" variant="white">Start again</Button>
+                                </PlaylistModule>
+                                }
                             </Grid.Col>
                         </Center>
                     </Grid>

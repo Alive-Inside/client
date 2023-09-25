@@ -16,7 +16,7 @@ export default function TrackResults({ currentlyPlaying, onTogglePlaying, search
         <>
             {searchResults.map(track => {
                 return (
-                    <SpotifyRow ringProgress={track.id === currentlyPlaying.trackId ? currentlyPlaying.ringProgress : null} track={track} buffering={['buffering', 'initial buffer'].includes(currentlyPlaying.state) && currentlyPlaying.trackId == track.id} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} onTogglePlaying={onTogglePlaying} key={track.id}>
+                    <SpotifyRow ringProgress={track.id === currentlyPlaying.trackId ? currentlyPlaying.ringProgress : null} track={track} buffering={['buffering', 'initial buffer'].includes(currentlyPlaying.state) && currentlyPlaying.trackId == track.id} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} onTogglePlaying={onTogglePlaying} key={'results ' + track.id}>
                         <Flex dir="left" justify="start" align={'center'} style={{ flex: 1 }}>
                             <div style={{ position: 'relative', marginLeft: '0.5rem' }}>
                                 {track.loading && (
@@ -32,20 +32,26 @@ export default function TrackResults({ currentlyPlaying, onTogglePlaying, search
                                 )}
                                 <Tooltip position="top" radius='sm' withinPortal={true} transition={TRANSITION_TYPE} openDelay={ALBUM_COVER_DELAY} label={`View ${track.title} on Spotify`}>
                                     <a target="_blank" href={track.url} rel='noreferrer'>
-                                        <Image height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR} />
+                                        <Image className="albumCover" height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR} />
                                     </a>
                                 </Tooltip>
                             </div>
-                            <Stack  style={{ maxWidth: "100%", overflowX: 'hidden' }}>
+                            <Stack style={{ overflowX: 'hidden' }}>
                                 <div style={{ paddingLeft: '1.25rem', textAlign: 'left' }}>
-                                    <Skeleton visible={track.loading === true} w='100%'>
-                                        <div style={{width:"100%"}}>
-                                            <span style={{ color: 'white', maxWidth: '30%', overflow: 'hidden' }}>
-                                                <MetadataLink isTitle={true} href={track.url}>{track.title}</MetadataLink>
+                                    <Skeleton visible={track.loading === true} h='xl'>
+                                        <div style={{ width: "100%" }}>
+                                            <span style={{ color: 'white', maxWidth: '30%' }}>
+                                                <MetadataLink isTitle={true} href={track.url}>
+                                                    <Tooltip withinPortal={true} position={'top'} radius='sm' openDelay={750} transition={'fade'} transitionDuration={300} label={track.title}>
+                                                        <span>
+                                                            {track.title}
+                                                        </span>
+                                                    </Tooltip>
+                                                </MetadataLink>
                                             </span>
                                             <span>&nbsp;•&nbsp;</span>
                                             <MetadataLink href={track.album.url}>
-                                                <Tooltip withinPortal={true} position="top" radius="sm" openDelay={1250} transition={"fade"} transitionDuration={300} closeDelay={0} label={track.album.name}>
+                                                <Tooltip withinPortal={true} position="top" radius="sm" openDelay={750} transition={"fade"} transitionDuration={300} closeDelay={0} label={track.album.name}>
                                                     <span style={{ fontSize: '14px' }}>
                                                         {track.album.name}
                                                     </span>

@@ -20,8 +20,8 @@ export default function AddedArtistRow({ artist, onRemoveArtist }: { artist: Art
                         </a>
                     </Tooltip>
                 </div>
-                <Stack w={'100vw'} style={{  lineHeight: 0 }}>
-                    <div style={{ width: '50%', marginLeft: '1.25rem', textAlign: 'left' }}>
+                <Stack w={largeScreen ? '45rem' : '50vw'} style={{  lineHeight: 0 }}>
+                    <div style={{ width: '35%', marginLeft: '1.25rem', textAlign: 'left' }}>
                         <MetadataLink href={artist.url}>
                             <Text truncate w={largeScreen ? '18rem' : '80vw'} size="md">{artist.name}</Text><br />
                         </MetadataLink>

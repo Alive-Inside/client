@@ -35,7 +35,7 @@ export default function ArtistResults({ searchResults, existingArtistIDs, onAddA
                                 </a>
                             </Tooltip>
                         </div>
-                        <Stack w={'100vw'} style={{ width: largeScreen ? '45rem' : '50vw' }}>
+                        <Stack style={{ width: largeScreen ? '45rem' : '50vw' }}>
                             <div style={{ width: '35%', textAlign: 'left', marginLeft: '1.25rem' }}>
                                 <Skeleton visible={artist.loading === true}>
                                     <MetadataLink href={artist.url}>

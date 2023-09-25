@@ -14,21 +14,22 @@ const AddedTrackRow = memo(({ track, onAddFive, onRemoveTrack, isFinalPlaylist, 
     const largeScreen = useMediaQuery(LARGE_SCREEN)
     const memoizedComponent = useMemo(() => {
         return (
-            <SpotifyRow track={track} ringProgress={currentlyPlaying?.trackId === track.id ? currentlyPlaying.ringProgress : null} onTogglePlaying={onTogglePlaying} buffering={['buffering', 'initial buffer'].includes(currentlyPlaying?.state) && currentlyPlaying?.trackId == track.id} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying.state === 'playing'} key={track.id}>
+            <SpotifyRow track={track} ringProgress={currentlyPlaying?.trackId === track.id ? currentlyPlaying?.ringProgress : null} onTogglePlaying={onTogglePlaying} buffering={['buffering', 'initial buffer'].includes(currentlyPlaying?.state) && currentlyPlaying?.trackId == track.id} playing={currentlyPlaying?.trackId === track.id && currentlyPlaying?.state === 'playing'} key={track.id}>
+                <br />
                 <Flex dir="left" justify="start" align={'center'} style={{ flex: 1 }}>
                     <div style={{ position: 'relative', marginLeft: '0.5rem' }}>
                         <Skeleton visible={track.loading === true}>
                             <Tooltip position="top" radius='sm' withinPortal={true} transition={TRANSITION_TYPE} openDelay={ALBUM_COVER_DELAY} label={`View ${track.title} on Spotify`}>
                                 <div>
                                     <a target="_blank" href={track.url} rel='noreferrer'>
-                                        <Image height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
+                                        <Image className='albumCover' height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
                                     </a>
                                 </div>
                             </Tooltip>
                         </Skeleton>
                     </div>
-                    <Stack style={{ overflowX: 'hidden', lineHeight: 0, width: largeScreen ? '45vw' : '50vw', }}>
-                        <div style={{ width: '60vw', marginLeft: '1.25rem', textAlign: 'left' }}>
+                    <Stack style={{ overflowX: 'hidden', lineHeight: 0, width: largeScreen ? '100%' : '50vw', }}>
+                        <div style={{ marginLeft: '1.25rem', textAlign: 'left' }}>
                             <Skeleton visible={track.loading === true} w='70%'>
                                 <Text w={largeScreen ? '60rem' : '40vw'} truncate size='md'>
                                     <span style={{ color: 'white' }}>
@@ -66,7 +67,7 @@ const AddedTrackRow = memo(({ track, onAddFive, onRemoveTrack, isFinalPlaylist, 
                 </div>
             </SpotifyRow>
         )
-    }, [track,])
+    }, [track, currentlyPlaying, fiveTracksLoading])
     return memoizedComponent
 });
 
