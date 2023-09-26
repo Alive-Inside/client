@@ -14,9 +14,9 @@ export default function AddedArtistRow({ artist, onRemoveArtist }: { artist: Art
         <SpotifyRow onTogglePlaying key={artist.id}>
             <Flex dir="left" justify="start" align="center" style={{ flex: 1 }}>
                 <div style={{ position: 'relative', marginLeft: '0.5rem' }}>
-                    <Tooltip position="top" withinPortal={true} radius="sm" openDelay={ALBUM_COVER_DELAY} transition="fade" label={`View ${artist.name} on Spotify`}>
+                    <Tooltip position="top" withinPortal={true} radius="sm" openDelay={ALBUM_COVER_DELAY} transition="fade" label={`OPEN ON SPOTIFY`}>
                         <a href={artist.url} target="_blank" rel="noreferrer">
-                            <Image style={{ borderRadius: '100px' }} height={50} width={50} alt={"Image of " + artist.name} src={artist.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
+                            <Image  height={50} width={50} alt={"Image of " + artist.name} src={artist.smallImageUrl || NO_SPOTIFY_AVATAR_IMAGE} />
                         </a>
                     </Tooltip>
                 </div>

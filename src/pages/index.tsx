@@ -24,12 +24,9 @@ export default function IndexPage({ isLoggedIn, refreshToken, accessToken }) {
         <Text size={'lg'}>Give your Elders their Memories back!</Text>
         <Container mt={50}>
           <Title>What is the Alive Inside App?</Title>
-          <Text>{`The Alive Inside App is a free music tool to find your elder's deepest memory music.
-              With the App and your caring energy, you can wake a mind and heart.`}</Text>
+          <Text>{`The Alive Inside App is a free music tool to help you wake your elders. With the App and a little love, you can change a life!`}</Text>
           <Title mt={'xl'}>Why Music?</Title>
-          <Text>Music accesses multiple parts of the brain, and miraculously stays strong, almost to the end.
-            Music and Human Connections can restore memory and identity!
-          </Text>
+          <Text>Music accesses the deepest parts of the brain and stays strong, almost to the end. Music and Human Connection restore memory and identity!</Text>
         </Container>
         <Link href="/app">
           <Button mt={"md"} variant="white" radius="xl" size="md">Try the app</Button>

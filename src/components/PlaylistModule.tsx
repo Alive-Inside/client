@@ -38,7 +38,7 @@ const fakeArtist: LoadableArtist = {
 
 const searchLimit = 4;
 
-export default function PlaylistModule({isLoadingTracks, formValues, spotifyUserData, searchType, generatedPlaylistTracks: generatedTracks, isFinalPlaylist, addTrack, addArtist, removeTrack, removeArtist, initialItems,  children,  }: { isLoadingTracks?: false, initialItems: (Track | Artist)[], formValues?: any, removeTrack?: Function, removeArtist?: Function, addTrack?: Function, addArtist?: Function, children?: any, isFinalPlaylist?: boolean, generatedPlaylistTracks?: Track[], spotifyUserData: SpotifyUserData, searchType: { item: 'track' | 'artist', multiple: boolean } }) {
+export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUserData, searchType, generatedPlaylistTracks: generatedTracks, isFinalPlaylist, addTrack, addArtist, removeTrack, removeArtist, initialItems, children, }: { isLoadingTracks?: false, initialItems: (Track | Artist)[], formValues?: any, removeTrack?: Function, removeArtist?: Function, addTrack?: Function, addArtist?: Function, children?: any, isFinalPlaylist?: boolean, generatedPlaylistTracks?: Track[], spotifyUserData: SpotifyUserData, searchType: { item: 'track' | 'artist', multiple: boolean } }) {
     const [tracks, setTracks] = useState<(Track & { loading?: boolean })[]>(generatedTracks ?? [fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack,]);
     const [artists, setArtists] = useState<Artist[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -107,10 +107,6 @@ export default function PlaylistModule({isLoadingTracks, formValues, spotifyUser
             if (spotifyPlaylist !== null) await AddTracksToPlaylist(spotifyPlaylist.id, recommendedTracks.map(t => t.uri), spotifyUserData.accessToken, insertIndex);
             localStorage.setItem('previouslyGeneratedTracks', JSON.stringify(newTracks));
             setFiveTracksLoading(new Map(fiveTracksLoading.set(trackId, false)))
-            setInterval(() => {
-                console.log(fiveTracksLoading)
-
-            }, 1000)
         } catch (e) {
             showErrorNotification('Error loading recommendations')
         }
@@ -171,7 +167,6 @@ export default function PlaylistModule({isLoadingTracks, formValues, spotifyUser
     }, [searchQuery])
 
     const onTogglePlaying = useCallback((trackId: string, mp3PreviewUrl: string) => {
-        console.log(trackId)
         if (currentlyPlaying?.trackId === trackId) {
             if (currentlyPlaying.state !== 'not playing') {
             }
@@ -202,8 +197,8 @@ export default function PlaylistModule({isLoadingTracks, formValues, spotifyUser
             {currentlyPlaying &&
                 <ReactPlayer progressInterval={10} onProgress={onProgress} style={{ display: 'none' }} onEnded={onEnd} url={currentlyPlaying?.mp3PreviewUrl} playing={currentlyPlaying?.state !== 'not playing'} />
             }
-            <div style={{ width: '', }}>
-                <Container mb={'md'} style={{ lineHeight: '1', display: 'flex', alignItems: 'center', height: '3.5rem', width: "100%", color: '#fff' }}>
+            <div>
+                <Container mb={'md'} style={{ lineHeight: '1', display: 'flex', alignItems: 'center', height: '3.5rem', color: '#fff' }}>
                     <TextInput
                         autoFocus={true} size='md' style={{ margin: `${!isFinalPlaylist ? "0 auto" : "0 0 0 1rem"}` }} value={searchQuery} className='searchBar' autoComplete="off" onChange={(e) => { setSearchQuery(e.currentTarget.value); }} onKeyDown={e => { if (e.key === 'Enter') e.preventDefault(); }} icon={
                             isLoadingSearchQuery ? <Loader size={17} color="black" style={{ marginBottom: '3px' }} /> : <ActionIcon variant="transparent" style={{ marginLeft: '0.25rem', marginBottom: '0' }}>
@@ -226,8 +221,8 @@ export default function PlaylistModule({isLoadingTracks, formValues, spotifyUser
 
                             </div> : <Loader style={{ marginLeft: '0.5em', marginRight: '1rem', marginTop: '0.75rem' }} variant="dots" color='green' />}
                             <Link href='/memory-bank'><Button color='blue' radius={'xl'} variant="outline" style={{}}><IconDeviceFloppy style={{ marginRight: '0.5rem' }} />Save to Memory Bank</Button> </Link>
-                            <div style={{marginLeft: '1rem'}}>
-                            {children}
+                            <div style={{ marginLeft: '1rem' }}>
+                                {children}
                             </div>
                         </div>
 
@@ -236,7 +231,7 @@ export default function PlaylistModule({isLoadingTracks, formValues, spotifyUser
 
                 <Center style={{ width: '100%' }}>
                     {(noResultsFound || trackSearchResults.length || artistSearchResults.length || tracks.filter(x => !x.fake).length > 0 || artists.filter(x => !x.fake).length > 0) && <Paper shadow="xs" style={{ paddingLeft: '5px', paddingRight: '10px', paddingTop: '5px', paddingBottom: '5px', backgroundColor: 'rgba(25, 20, 20, 0.9)' }} w="100vw">
-                        <ScrollArea.Autosize maxHeight={"65vh"} viewportRef={viewport}>
+                        <ScrollArea.Autosize maxHeight={"45vh"} viewportRef={viewport}>
                             <div>
                                 {noResultsFound && !isLoadingSearchQuery && [...trackSearchResults, ...artistSearchResults].length === 0 &&
                                     <SpotifyRow onTogglePlaying={onTogglePlaying}>
@@ -256,6 +251,9 @@ export default function PlaylistModule({isLoadingTracks, formValues, spotifyUser
                                 <ArtistResults onAddArtist={onAddArtist} existingArtistIDs={artists.map(a => a.id)} searchResults={artistSearchResults} />
                             </div>
                         </ScrollArea.Autosize>
+                        <Center>
+                            <Image mb='10px' style={{ width: '90px' }} src={SpotifyLogo.src}></Image>
+                        </Center>
                     </Paper>}
                 </Center>
             </div >

@@ -30,7 +30,7 @@ export default function TrackResults({ currentlyPlaying, onTogglePlaying, search
                                         }}
                                     />
                                 )}
-                                <Tooltip position="top" radius='sm' withinPortal={true} transition={TRANSITION_TYPE} openDelay={ALBUM_COVER_DELAY} label={`View ${track.title} on Spotify`}>
+                                <Tooltip position="top" radius='sm' withinPortal={true} transition={TRANSITION_TYPE} openDelay={ALBUM_COVER_DELAY} label={`OPEN ON SPOTIFY`}>
                                     <a target="_blank" href={track.url} rel='noreferrer'>
                                         <Image className="albumCover" height={50} width={50} alt="album cover" src={track.album.smallImageUrl || NO_SPOTIFY_AVATAR} />
                                     </a>
