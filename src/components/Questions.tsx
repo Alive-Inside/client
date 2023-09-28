@@ -58,7 +58,7 @@ export default function Questions({ isLoggedIn }) {
         initialValues: {
             eldersFirstName: '',
             eldersBirthYear: 1950,
-            musicalPreferences: ['classical'],
+            musicalPreferences: [],
             earliestMusicLoved: DEFAULT_TRACK_VALUE,
             musiciansFromHeritage: DEFAULT_ARTISTS_VALUE,
             musiciansParentsListenedTo: DEFAULT_ARTISTS_VALUE,
