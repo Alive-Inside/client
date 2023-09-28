@@ -5,7 +5,7 @@ import LoginRedirect from "../utils/login-redirect";
 export default async function createPlaylist(
   eldersFirstName: string,
   eldersBirthYear: number,
-  musicalPreference: string
+  musicalPreferences: string[]
 ) {
   const {
     publicRuntimeConfig: { BACKEND_URL },
@@ -20,7 +20,7 @@ export default async function createPlaylist(
         },
         method: "POST",
         body: JSON.stringify({
-          name: `${eldersFirstName} ${eldersBirthYear} ${musicalPreference}`,
+          name: `${eldersFirstName} ${eldersBirthYear}`// ${musicalPreferences}`,
         }),
       })
     ).json();

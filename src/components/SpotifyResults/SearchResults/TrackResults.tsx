@@ -36,7 +36,7 @@ export default function TrackResults({ currentlyPlaying, onTogglePlaying, search
                                     </a>
                                 </Tooltip>
                             </div>
-                            <Stack style={{ overflowX: 'hidden' }}>
+                            <Stack style={{ overflow: 'hidden' }}>
                                 <div style={{ paddingLeft: '1.25rem', textAlign: 'left' }}>
                                     <Skeleton visible={track.loading === true} h='xl'>
                                         <div style={{ width: "100%" }}>

@@ -149,7 +149,7 @@ export default function PlaylistModule({ startAgain, isLoadingTracks, formValues
 
     async function exportPlaylist() {
         setIsSavingToSpotify(true);
-        const { url, id } = await createPlaylist(formValues.eldersFirstName, formValues.eldersBirthYear, formValues.musicalPreference);
+        const { url, id } = await createPlaylist(formValues.eldersFirstName, formValues.eldersBirthYear, formValues.musicalPreferences);
         setSpotifyPlaylist({ url, id })
         localStorage.setItem('exportedSpotifyPlaylist', JSON.stringify({ url, id }))
         await AddTracksToPlaylist(id, tracks.map(pT => pT.uri), spotifyUserData.accessToken);

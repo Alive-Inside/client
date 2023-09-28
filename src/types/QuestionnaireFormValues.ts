@@ -5,7 +5,7 @@ type QuestionnaireFormValues = {
   earliestMusicLoved: Artist[];
   eldersFirstName: string;
   eldersBirthYear: number;
-  musicalPreference: string;
+  musicalPreferences: string[];
   musiciansFromHeritage: Artist[];
   musiciansParentsListenedTo: Artist[];
   eldersFavoriteArtistsAsTeenager: Artist[];

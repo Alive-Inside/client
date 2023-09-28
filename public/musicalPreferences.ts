@@ -33,7 +33,7 @@ export default [
   },
   {
     value: "disco",
-    label: "Cisco",
+    label: "Disco",
   },
   {
     value: "disney",

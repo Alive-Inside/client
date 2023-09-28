@@ -1,4 +1,4 @@
-import { Button, Card, Center, Flex, FocusTrap, Grid, Group, List, LoadingOverlay, Modal, NumberInput, Select, Stack, Text, TextInput, Textarea } from "@mantine/core";
+import { Button, Card, Center, Flex, FocusTrap, Grid, Group, List, LoadingOverlay, Modal, MultiSelect, NumberInput, Select, Stack, Text, TextInput, Textarea } from "@mantine/core";
 import { useForm } from '@mantine/form';
 import { useDebouncedValue, useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { capitalize, chunk, flatMap, fromPairs, shuffle } from "lodash";
@@ -30,6 +30,7 @@ export default function Questions({ isLoggedIn }) {
     const [isSessionNotesModalOpened, setIsSessionNotesModalOpened] = useState(false);
     const [editingSessionNotes, setEditingSessionNotes] = useState("");
     const [sessionNotes, setSessionNotes] = useState("");
+    const [multiselectValue, setMultiselectValue] = useState("");
 
     useEffect(() => {
         setSpotifyUserData(JSON.parse(localStorage.getItem('spotifyUserData')));
@@ -57,7 +58,7 @@ export default function Questions({ isLoggedIn }) {
         initialValues: {
             eldersFirstName: '',
             eldersBirthYear: 1950,
-            musicalPreference: 'classical',
+            musicalPreferences: ['classical'],
             earliestMusicLoved: DEFAULT_TRACK_VALUE,
             musiciansFromHeritage: DEFAULT_ARTISTS_VALUE,
             musiciansParentsListenedTo: DEFAULT_ARTISTS_VALUE,
@@ -73,7 +74,7 @@ export default function Questions({ isLoggedIn }) {
         validate: {
             eldersFirstName: (val) => (val.length < 2 ? 'Name must have at least 2 letters' : null),
             eldersBirthYear: (val) => { return (val < 1900 ? "Year can't be older than 1900" : val > 2000 ? "Year can't be later than 2000" : null) },
-            musicalPreference: (val) => musicalPreferences.find(mP => mP.value === val) === undefined ? "Preference isn't in the list" : null,
+            // musicalPreferences: (val) => musicalPreferences.find(mP => mP.value === val) === undefined ? "Preference isn't in the list" : null,
         },
 
     });
@@ -105,11 +106,11 @@ export default function Questions({ isLoggedIn }) {
                 <NumberInput onKeyDown={e => { if (e.key === 'Enter') e.preventDefault() }} variant="filled" size="lg" autoFocus={true} onKeyDownCapture={handleNext} min={1900} max={2000} {...form.getInputProps('eldersBirthYear')} />
             </>
         },
-        {
-            isUnskippable: true, question: "What kind of Music do they like?", formType: 'multiSelect', formValue: 'musicalPreference', element: <><PromptText>What kind of Music do they like?</PromptText>
-                <Select autoFocus={true} variant="filled" size="lg" onKeyDown={e => e.preventDefault()} onKeyDownCapture={handleNext} data={musicalPreferences} {...form.getInputProps('musicalPreference')} />
-            </>
-        },
+        // {
+        //     isUnskippable: true, question: "What kind of Music do they like?", formType: 'multiSelect', formValue: 'musicalPreferences', element: <><PromptText>What kind of Music do they like?</PromptText>
+        //         <MultiSelect placeholder="Pick all that they " ara-label='genre selector' maw='30rem' size='lg' nothingFound='No genre found...' variant="filled" searchable onKeyDown={e => { if (e.key === 'Enter') e.preventDefault(); }} onKeyDownCapture={handleNext} data={musicalPreferences} {...form.getInputProps('musicalPreferences')} />
+        //     </>
+        // },
         {
             question: "Can you recall the earliest music you loved?", formType: 'yesOrNo', formValue: 'canYouRecallEarliestMusicLoved', element: <div key={'earliestMusicLovedYesOrNo'}>
                 <PromptText>Time for the music! Ask your elder:</PromptText>
@@ -291,7 +292,7 @@ export default function Questions({ isLoggedIn }) {
     async function generatePlaylistTracks() {
         setPromptIndex(promptIndex + 1);
         setIsGeneratingPlaylist(true);
-        const { songsThatNobodyKnows, songsWithEmotionalMemories, eldersBirthYear, musicalPreference, musiciansFromHeritage, musiciansParentsListenedTo, eldersFavoriteArtistsAsTeenager, specialSongs, earliestMusicLoved, songsThatMakeYouCry } = form.values;
+        const { songsThatNobodyKnows, songsWithEmotionalMemories, eldersBirthYear, musicalPreferences: musicalPreferencesValues, musiciansFromHeritage, musiciansParentsListenedTo, eldersFavoriteArtistsAsTeenager, specialSongs, earliestMusicLoved, songsThatMakeYouCry } = form.values;
 
         const seedTracks = flatMap([songsThatNobodyKnows, songsWithEmotionalMemories, specialSongs, songsThatMakeYouCry]).map(s => { return { type: 'track', ...s } });
         const seedArtists = flatMap([musiciansFromHeritage, musiciansParentsListenedTo, eldersFavoriteArtistsAsTeenager, earliestMusicLoved]).map(a => { return { type: 'artist', ...a } });
@@ -300,9 +301,9 @@ export default function Questions({ isLoggedIn }) {
         const chunkedSeeds: ((Artist | Track) & { type: 'track' | 'artist' })[][] = chunk(mixedOrderedSeeds, 5);
 
         const cumulativeRecommendedTracks: Track[] = [];
-        const targetYear = seedTracks.length > 0 ? 
+        const targetYear = seedTracks.length > 0 ?
             (seedTracks.map((t) => t.album.releaseYear).reduce((a, b) => a + b) /
-            seedTracks?.length) : eldersBirthYear+5;
+                seedTracks?.length) : eldersBirthYear + 5;
 
         let chunkSize = 5;
         const chunks = chunkedSeeds.length
@@ -336,7 +337,7 @@ export default function Questions({ isLoggedIn }) {
                     break;
                 case 'yesOrNo': answer = form.values[formValue] ? 'Yes' : 'No';
                     break;
-                case 'multiSelect': answer = musicalPreferences.find(mP => mP.value === (form.values[formValue])).label;
+                case 'multiSelect': answer = ((form.values[formValue]) as string[]).map(x => musicalPreferences.find(mP => mP.value === x).label).join(', ');
                     break;
                 //@ts-ignore
                 default: answer = form.values[formValue];
