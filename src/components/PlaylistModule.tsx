@@ -239,6 +239,7 @@ export default function PlaylistModule({ startAgain, isLoadingTracks, formValues
                                         <Text style={{ fontWeight: 'bold', wordWrap: 'break-word', width: '100%' }}>No results found for &quot;{debouncedQuery}&quot;</Text>
                                     </SpotifyRow>}
                                 {searchType.item === 'track' &&
+                                    !(noResultsFound && !isLoadingSearchQuery && [...trackSearchResults, ...artistSearchResults].length === 0) &&
                                     ((searchQuery.length === 0 || trackSearchResults.length === 0) && !isLoadingSearchQuery) && tracks.map((track, i) => {
                                         return <AddedTrackRow onTogglePlaying={onTogglePlaying} currentlyPlaying={currentlyPlaying} key={i} fiveTracksLoading={fiveTracksLoading.get(track.id)} onAddFive={onAddFive} isFinalPlaylist={isFinalPlaylist} track={track} onRemoveTrack={onRemoveTrack} />
                                     })

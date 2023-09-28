@@ -19,9 +19,10 @@ export default function EmailList({ initialEmails, onSubmit }: { initialEmails: 
     })
 
     useEffect(() => {
-    },[]);
+    }, []);
 
     function addEmail() {
+        // form.setFieldValue('email', form.values['email'].trim());
         if (!form.validateField('email').hasError) {
             setEmails([...emails, form.values.email]);
             form.setFieldValue('email', '')

@@ -42,7 +42,8 @@ export default function MemoryBankPage() {
 
     async function onSubmit(emails: string[]) {
         try {
-            await SendEmail(emails, formQuestionsAndAnswers.current, tracks.current.map(t => { return { title: t.title, artistName: t.artist.name } }));
+            const sessionNotes = localStorage.getItem('sessionNotes');
+            await SendEmail(emails, formQuestionsAndAnswers.current, tracks.current.map(t => { return { title: t.title, artistName: t.artist.name } }), sessionNotes);
             setEmailsSent(true);
             localStorage.setItem('emailsSent', "true");
         } catch (e) {

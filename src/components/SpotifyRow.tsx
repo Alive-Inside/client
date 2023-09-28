@@ -17,7 +17,7 @@ export default function SpotifyRow({ onTogglePlaying, buffering, ringProgress, p
     return (
         <Flex align="center" ml="xs" justify="start" dir='left' mb="md" mt="md" >
             {track !== undefined && (
-                <Tooltip position="top" withinPortal={true} openDelay={PLAYBACK_DELAY} transition={TRANSITION_TYPE} label={playing ? "Pause" : `Play ${track.title} by ${track.artist.name}`} radius={TOOLTIP_BORDER_RADIUS}>
+                <Tooltip hidden={track.title === 'Fake title'} position="top" withinPortal={true} openDelay={PLAYBACK_DELAY} transition={TRANSITION_TYPE} label={playing ? "Pause" : `Play ${track.title} by ${track.artist.name}`} radius={TOOLTIP_BORDER_RADIUS}>
                     <ActionIcon
                         onClick={() => {
                             if (track.mp3PreviewUrl === null) {

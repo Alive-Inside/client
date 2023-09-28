@@ -201,6 +201,7 @@ export default function Questions({ isLoggedIn }) {
     function startAgain() {
         form.reset();
         localStorage.removeItem('previouslyGeneratedTracks')
+        localStorage.removeItem('sessionNotes')
         localStorage.removeItem('formQuestionsAndAnswers')
         localStorage.removeItem('exportedSpotifyPlaylist')
         setGeneratedPlaylistTracks([]);
@@ -387,7 +388,7 @@ export default function Questions({ isLoggedIn }) {
                                     {promptIndex >= 1 && promptIndex < prompts.length - 2 && <Button variant="white" size='lg' radius={'xl'} onClick={handleBack}><IconChevronLeft />Back</Button>}
                                     {(['readonly', 'multiSelect'].includes(prompts[promptIndex].formType) || (prompts[promptIndex].formType === 'searchInput' && form.values[prompts[promptIndex].
                                         //@ts-ignore
-                                        formValue].length > 0) || (prompts[promptIndex].formType === 'shortAnswer' && form.values[prompts[promptIndex].formValue]?.length > 0) || (prompts[promptIndex].formType === 'numberInput' && !isNaN(form.values[prompts[promptIndex].formValue]))) && <Button radius={'xl'} size="lg" onClick={handleNext}>{promptIndex === 0 ? 'Begin' : 'Next'}<IconChevronRight/></Button>}{!prompts[promptIndex].isUnskippable && (prompts[promptIndex].formType === 'yesOrNo' || ((prompts[promptIndex].formType === 'searchInput' && [undefined, 0].includes(form.values[prompts[promptIndex].formValue]?.length)))) && ((promptIndex !== FINAL_PROMPT_INDEX || hasAnyQuestionBeenAnswered && promptIndex === FINAL_PROMPT_INDEX)) && <Button radius='xl' size='lg' onClick={handleSkip}>Skip<IconChevronsRight/></Button>}
+                                        formValue].length > 0) || (prompts[promptIndex].formType === 'shortAnswer' && form.values[prompts[promptIndex].formValue]?.length > 0) || (prompts[promptIndex].formType === 'numberInput' && !isNaN(form.values[prompts[promptIndex].formValue]))) && <Button radius={'xl'} size="lg" onClick={handleNext}>{promptIndex === 0 ? 'Begin' : 'Next'}<IconChevronRight /></Button>}{!prompts[promptIndex].isUnskippable && (prompts[promptIndex].formType === 'yesOrNo' || ((prompts[promptIndex].formType === 'searchInput' && [undefined, 0].includes(form.values[prompts[promptIndex].formValue]?.length)))) && ((promptIndex !== FINAL_PROMPT_INDEX || hasAnyQuestionBeenAnswered && promptIndex === FINAL_PROMPT_INDEX)) && <Button radius='xl' size='lg' onClick={handleSkip}>Skip<IconChevronsRight /></Button>}
                                 </Group>
                             </form>
                     }

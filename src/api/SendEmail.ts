@@ -5,7 +5,8 @@ import { showErrorNotification } from "../utils/notifications";
 export default async function SendEmail(
   emails: string[],
   formQuestionsAndAnswers: { question: string; answer: string }[],
-  tracks: { title: string; artistName: string }[]
+  tracks: { title: string; artistName: string }[],
+  sessionNotes: string
 ) {
   try {
     const jwt = localStorage.getItem("jwt");
@@ -19,7 +20,7 @@ export default async function SendEmail(
         Authorization: `Bearer ${jwt}`,
       },
       method: "POST",
-      body: JSON.stringify({ emails, tracks, formQuestionsAndAnswers }),
+      body: JSON.stringify({ emails, tracks, formQuestionsAndAnswers, sessionNotes }),
     });
   } catch (e) {
     showErrorNotification("Error sending email - Try submitting again");
