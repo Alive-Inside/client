@@ -300,9 +300,9 @@ export default function Questions({ isLoggedIn }) {
         const chunkedSeeds: ((Artist | Track) & { type: 'track' | 'artist' })[][] = chunk(mixedOrderedSeeds, 5);
 
         const cumulativeRecommendedTracks: Track[] = [];
-        const targetYear =
-            seedTracks.map((t) => t.album.releaseYear).reduce((a, b) => a + b) /
-            seedTracks.length;
+        const targetYear = seedTracks.length > 0 ? 
+            (seedTracks.map((t) => t.album.releaseYear).reduce((a, b) => a + b) /
+            seedTracks?.length) : eldersBirthYear+5;
 
         let chunkSize = 5;
         const chunks = chunkedSeeds.length
