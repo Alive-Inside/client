@@ -11,7 +11,7 @@ import AddTracksToPlaylist from "../api/AddTrackToPlaylist";
 import createPlaylist from "../api/CreatePlaylist";
 import GetRecommendations from "../api/GetRecommendations";
 import Search from "../api/Search";
-import { LARGE_SCREEN, SPOTIFY_SEARCH_DEBOUNCE_INTERVAL } from "../constants";
+import { LARGE_SCREEN, SPOTIFY_BLACK, SPOTIFY_SEARCH_DEBOUNCE_INTERVAL } from "../constants";
 import Artist, { LoadableArtist } from "../types/Artist";
 import SpotifyUserData from "../types/SpotifyUserData";
 import Track, { LoadableTrack } from "../types/Track";
@@ -231,7 +231,7 @@ export default function PlaylistModule({ startAgain, isLoadingTracks, formValues
                 </Container>
 
                 <Center style={{ width: '100%' }}>
-                    {(noResultsFound || trackSearchResults.length || artistSearchResults.length || tracks.filter(x => !x.fake).length > 0 || artists.filter(x => !x.fake).length > 0) && <Paper shadow="xs" style={{ paddingLeft: '5px', paddingRight: '10px', paddingTop: '5px', paddingBottom: '5px', backgroundColor: 'rgba(25, 20, 20)' }} w="100vw">
+                    {(noResultsFound || trackSearchResults.length || artistSearchResults.length || tracks.filter(x => !x.fake).length > 0 || artists.filter(x => !x.fake).length > 0) && <Paper shadow="xs" style={{ paddingLeft: '5px', paddingRight: '10px', paddingTop: '5px', paddingBottom: '5px', backgroundColor: SPOTIFY_BLACK }} w="100vw">
                         <ScrollArea.Autosize maxHeight={"45vh"} viewportRef={viewport}>
                             <div>
                                 {noResultsFound && !isLoadingSearchQuery && [...trackSearchResults, ...artistSearchResults].length === 0 &&
@@ -254,7 +254,7 @@ export default function PlaylistModule({ startAgain, isLoadingTracks, formValues
                             </div>
                         </ScrollArea.Autosize>
                         <Center>
-                            <Image mb='10px' style={{ width: '90px' }} src={SpotifyLogo.src}></Image>
+                            <Image mb='15px' style={{ width: '90px' }} src={SpotifyLogo.src}></Image>
                         </Center>
                     </Paper>}
                 </Center>

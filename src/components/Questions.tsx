@@ -365,7 +365,7 @@ export default function Questions({ isLoggedIn }) {
     return (
         <>
             {
-                <div style={{ maxWidth: "50rem", textAlign: 'center', padding: '10px' }} className="question">
+                <div style={{ maxWidth: "80rem", textAlign: 'center', padding: '10px' }} className="question">
                     <Modal
                         overlayOpacity={0.55}
                         overlayBlur={3}
