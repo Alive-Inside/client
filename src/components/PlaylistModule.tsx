@@ -231,7 +231,7 @@ export default function PlaylistModule({ startAgain, isLoadingTracks, formValues
                 </Container>
 
                 <Center style={{ width: '100%' }}>
-                    {(noResultsFound || trackSearchResults.length || artistSearchResults.length || tracks.filter(x => !x.fake).length > 0 || artists.filter(x => !x.fake).length > 0) && <Paper shadow="xs" style={{ paddingLeft: '5px', paddingRight: '10px', paddingTop: '5px', paddingBottom: '5px', backgroundColor: 'rgba(25, 20, 20, 0.9)' }} w="100vw">
+                    {(noResultsFound || trackSearchResults.length || artistSearchResults.length || tracks.filter(x => !x.fake).length > 0 || artists.filter(x => !x.fake).length > 0) && <Paper shadow="xs" style={{ paddingLeft: '5px', paddingRight: '10px', paddingTop: '5px', paddingBottom: '5px', backgroundColor: 'rgba(25, 20, 20)' }} w="100vw">
                         <ScrollArea.Autosize maxHeight={"45vh"} viewportRef={viewport}>
                             <div>
                                 {noResultsFound && !isLoadingSearchQuery && [...trackSearchResults, ...artistSearchResults].length === 0 &&
