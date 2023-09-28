@@ -172,10 +172,10 @@ export default function Questions({ isLoggedIn }) {
                     <Grid mt='3rem' >
                         <Grid.Col span={9}>
                             <List size={largeScreen ? 'md' : 'xs'} style={{ textAlign: 'left', float: 'right' }} type="ordered">
-                                <Text style={{ textAlign: 'left', height: '100%' }} size={'md'}><b>OK, now the fun starts!<br /> Let's make your Playlist better!</b> </Text>
+                                <Text style={{ textAlign: 'left', height: '100%' }} size={'md'}><b>OK, now the fun starts!<br />{`Let's make your Playlist better!`}</b> </Text>
                                 <br />
                                 <List.Item>Listen to the songs with your Elder- notice how they react!</List.Item>
-                                <List.Item>Remove any songs they don't like!</List.Item>
+                                <List.Item>{`Remove any songs they don't like!`}</List.Item>
                                 <List.Item>If they like a song, add more by the same artist by using the +5 button</List.Item>
                                 <List.Item>If a new song comes to mind, find and add it using the search bar</List.Item>
                                 <List.Item>When you are all done, send the list to family members and The Alive Inside Memory Bank to save forever! </List.Item>

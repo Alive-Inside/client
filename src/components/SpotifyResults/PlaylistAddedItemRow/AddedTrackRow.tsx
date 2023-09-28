@@ -8,9 +8,9 @@ import NO_SPOTIFY_AVATAR_IMAGE from '../../../../public/no_spotify_avatar.png';
 import { CurrentlyPlaying } from "../../PlaylistModule";
 import MetadataLink from "../../MetadataLink";
 import { ALBUM_COVER_DELAY, TOOLTIP_BORDER_RADIUS, TRANSITION_TYPE } from "../TooltipConfig";
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 
-const AddedTrackRow = memo(({ track, onAddFive, onRemoveTrack, isFinalPlaylist, fiveTracksLoading, currentlyPlaying, onTogglePlaying }: { currentlyPlaying: CurrentlyPlaying, onTogglePlaying: (trackID: string, mp3PreviewUrl: string) => void, fiveTracksLoading: boolean, track: LoadableTrack, onAddFive?: Function, onRemoveTrack: Function, isFinalPlaylist?: boolean }) => {
+const AddedTrackRow = ({ track, onAddFive, onRemoveTrack, isFinalPlaylist, fiveTracksLoading, currentlyPlaying, onTogglePlaying }: { currentlyPlaying: CurrentlyPlaying, onTogglePlaying: (trackID: string, mp3PreviewUrl: string) => void, fiveTracksLoading: boolean, track: LoadableTrack, onAddFive?: Function, onRemoveTrack: Function, isFinalPlaylist?: boolean }) => {
     const largeScreen = useMediaQuery(LARGE_SCREEN)
     const memoizedComponent = useMemo(() => {
         return (
@@ -67,8 +67,8 @@ const AddedTrackRow = memo(({ track, onAddFive, onRemoveTrack, isFinalPlaylist, 
                 </div>
             </SpotifyRow>
         )
-    }, [track, currentlyPlaying, fiveTracksLoading])
+    }, [track, currentlyPlaying, fiveTracksLoading]);
     return memoizedComponent
-});
+};
 
 export default AddedTrackRow;
