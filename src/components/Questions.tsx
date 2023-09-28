@@ -106,11 +106,11 @@ export default function Questions({ isLoggedIn }) {
                 <NumberInput onKeyDown={e => { if (e.key === 'Enter') e.preventDefault() }} variant="filled" size="lg" autoFocus={true} onKeyDownCapture={handleNext} min={1900} max={2000} {...form.getInputProps('eldersBirthYear')} />
             </>
         },
-        // {
-        //     isUnskippable: true, question: "What kind of Music do they like?", formType: 'multiSelect', formValue: 'musicalPreferences', element: <><PromptText>What kind of Music do they like?</PromptText>
-        //         <MultiSelect placeholder="Pick all that they " ara-label='genre selector' maw='30rem' size='lg' nothingFound='No genre found...' variant="filled" searchable onKeyDown={e => { if (e.key === 'Enter') e.preventDefault(); }} onKeyDownCapture={handleNext} data={musicalPreferences} {...form.getInputProps('musicalPreferences')} />
-        //     </>
-        // },
+        {
+            isUnskippable: true, question: "What kind of Music do they like?", formType: 'multiSelect', formValue: 'musicalPreferences', element: <><PromptText>What kind of Music do they like?</PromptText>
+                <MultiSelect placeholder="Pick all that they " ara-label='genre selector' maw='30rem' size='lg' nothingFound='No genre found...' variant="filled" searchable onKeyDown={e => { if (e.key === 'Enter') e.preventDefault(); }} onKeyDownCapture={handleNext} data={musicalPreferences} {...form.getInputProps('musicalPreferences')} />
+            </>
+        },
         {
             question: "Can you recall the earliest music you loved?", formType: 'yesOrNo', formValue: 'canYouRecallEarliestMusicLoved', element: <div key={'earliestMusicLovedYesOrNo'}>
                 <PromptText>Time for the music! Ask your elder:</PromptText>
