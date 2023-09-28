@@ -1,8 +1,8 @@
-import { Button, Card, Center, Flex, Grid, Group, List, LoadingOverlay, NumberInput, Select, Stack, Text, TextInput } from "@mantine/core";
+import { Button, Card, Center, Flex, FocusTrap, Grid, Group, List, LoadingOverlay, Modal, NumberInput, Select, Stack, Text, TextInput, Textarea } from "@mantine/core";
 import { useForm } from '@mantine/form';
-import { useDebouncedValue, useMediaQuery } from "@mantine/hooks";
+import { useDebouncedValue, useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { capitalize, chunk, flatMap, fromPairs, shuffle } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DEFAULT_ARTISTS_VALUE, DEFAULT_TRACKS_VALUE, DEFAULT_TRACK_VALUE, LARGE_SCREEN, SPOTIFY_SEARCH_DEBOUNCE_INTERVAL as SEARCH_DEBOUNCE_INTERVAL, SPOTIFY_SEARCH_DEBOUNCE_INTERVAL } from "../constants";
 import musicalPreferences from "../../public/musicalPreferences";
 import GetRecommendations from "../api/GetRecommendations";
@@ -14,8 +14,7 @@ import QuestionnaireFormValues from "../types/QuestionnaireFormValues";
 import useStyles from "../styles";
 import SpotifyLoginButton from "./SpotifyLoginButton";
 import MetadataLink from "./MetadataLink";
-import { IconPencil } from "@tabler/icons";
-import { modals } from '@mantine/modals';
+import { IconArrowLeft, IconChevronLeft, IconChevronRight, IconChevronsLeft, IconChevronsRight, IconDeviceFloppy, IconPencil, IconX } from "@tabler/icons";
 
 const testFinalPage = false;
 const FINAL_PROMPT_INDEX = 13
@@ -28,11 +27,18 @@ export default function Questions({ isLoggedIn }) {
     const [promptIndex, setPromptIndex] = useState(process.env.NODE_ENV === 'production' ? 0 : testFinalPage ? FINAL_PROMPT_INDEX : 0);
     const [hasAnyQuestionBeenAnswered, setHasAnyQuestionBeenAnswered] = useState(false);
     const [spotifyUserData, setSpotifyUserData] = useState<SpotifyUserData>(null);
-
+    const [isSessionNotesModalOpened, setIsSessionNotesModalOpened] = useState(false);
+    const [editingSessionNotes, setEditingSessionNotes] = useState("");
+    const [sessionNotes, setSessionNotes] = useState("");
 
     useEffect(() => {
         setSpotifyUserData(JSON.parse(localStorage.getItem('spotifyUserData')));
         const previouslyGeneratedTracks = JSON.parse(localStorage.getItem('previouslyGeneratedTracks'))
+        const savedSessionNotes = localStorage.getItem('sessionNotes')
+        if (savedSessionNotes) {
+            setSessionNotes(savedSessionNotes)
+            setEditingSessionNotes(savedSessionNotes)
+        }
         if (previouslyGeneratedTracks) {
             setGeneratedPlaylistTracks(previouslyGeneratedTracks);
             setPromptIndex(prompts.length - 1);
@@ -177,9 +183,8 @@ export default function Questions({ isLoggedIn }) {
                         </Grid.Col>
                         <Center>
                             <Grid.Col span={10}>
-                                {generatedPlaylistTracks.length > 0 && <PlaylistModule initialItems={generatedPlaylistTracks} formValues={form.values} isFinalPlaylist={true} searchType={{ item: 'track', multiple: true }} generatedPlaylistTracks={generatedPlaylistTracks} spotifyUserData={spotifyUserData}>
-                                    <Button variant="white" radius='xl'><IconPencil style={{ marginRight: '0.5rem' }} onClick={handleSessionNotes} />Edit Session Notes</Button>
-                                    <Button onClick={startAgain} radius="xl" variant="white">Start again</Button>
+                                {generatedPlaylistTracks.length > 0 && <PlaylistModule startAgain={startAgain} initialItems={generatedPlaylistTracks} formValues={form.values} isFinalPlaylist={true} searchType={{ item: 'track', multiple: true }} generatedPlaylistTracks={generatedPlaylistTracks} spotifyUserData={spotifyUserData}>
+                                    <Button onClick={handleOpenModal} variant="white" radius='xl'><IconPencil style={{ marginRight: '0.5rem' }} />Edit Session Notes</Button>
                                 </PlaylistModule>
                                 }
                             </Grid.Col>
@@ -231,22 +236,6 @@ export default function Questions({ isLoggedIn }) {
         form.setFieldValue(formValue, [...oldFormValue ?? [], track]);
     }
 
-    function handleSessionNotes() {
-        const openModal = () => modals.openConfirmModal({
-            title: 'Please confirm your action',
-            children: (
-                <Text size="sm">
-                    This action is so important that you are required to confirm it with a modal. Please click
-                    one of these buttons to proceed.
-                </Text>
-            ),
-            labels: { confirm: 'Confirm', cancel: 'Cancel' },
-            onCancel: () => console.log('Cancel'),
-            onConfirm: () => console.log('Confirmed'),
-        });
-
-    }
-
     function handleNext(e) {
         if (prompts[promptIndex].formType === 'searchInput') setHasAnyQuestionBeenAnswered(true)
         if (promptIndex === 0) {
@@ -281,7 +270,8 @@ export default function Questions({ isLoggedIn }) {
 
     function YesOrNoButtons() {
         return <div style={{ marginBottom: '4rem' }}>
-            <Button size='xl' radius='xl' variant="white" onClick={() => handleYesOrNoPrompt(true)}>Yes</Button><Button size="xl" radius='xl' variant='white' style={{ marginLeft: '3rem', marginTop: '1rem' }} onClick={() => handleYesOrNoPrompt(false)}>No</Button>
+            <Button size="xl" radius='xl' variant="white" style={{ marginTop: '1rem' }} onClick={() => handleYesOrNoPrompt(false)}>No</Button>
+            <Button size='xl' radius='xl' variant='white' style={{ marginLeft: '3rem' }} onClick={() => handleYesOrNoPrompt(true)}>Yes</Button>
         </div>
     }
 
@@ -356,10 +346,33 @@ export default function Questions({ isLoggedIn }) {
         setIsGeneratingPlaylist(false);
     }
 
+    function handleOpenModal() {
+        setIsSessionNotesModalOpened(true);
+    }
+
+    function handleSaveModal() {
+        setIsSessionNotesModalOpened(false)
+        setSessionNotes(editingSessionNotes)
+        localStorage.setItem('sessionNotes', editingSessionNotes);
+    }
+
+    function handleCancelModal() {
+        setEditingSessionNotes(sessionNotes);
+        setIsSessionNotesModalOpened(false);
+    }
+
     return (
         <>
             {
                 <div style={{ maxWidth: "50rem", textAlign: 'center', padding: '10px' }} className="question">
+                    <Modal
+                        overlayOpacity={0.55}
+                        overlayBlur={3}
+                        title='Edit Session Notes' centered onClose={handleCancelModal} opened={isSessionNotesModalOpened}>
+                        <Textarea data-autoFocus value={editingSessionNotes} onInput={e => setEditingSessionNotes(e.currentTarget.value)} maxLength={3000} maxRows={20} minRows={12}></Textarea>
+                        <Button onClick={handleCancelModal} mt='sm' color='red' radius='xl'><IconX />Cancel</Button>
+                        <Button onClick={handleSaveModal} mt='sm' style={{ float: 'right' }} color='green' radius='xl'><IconDeviceFloppy /> Save</Button>
+                    </Modal>
                     {
                         !isLoggedIn ?
                             <Center>
@@ -371,10 +384,10 @@ export default function Questions({ isLoggedIn }) {
                             <form>
                                 {prompts[promptIndex].element}
                                 <Group position="center" mt="md">
-                                    {promptIndex >= 1 && promptIndex < prompts.length - 2 && <Button variant="outline" size='xl' radius={'xl'} onClick={handleBack}>Back</Button>}
+                                    {promptIndex >= 1 && promptIndex < prompts.length - 2 && <Button variant="white" size='lg' radius={'xl'} onClick={handleBack}><IconChevronLeft />Back</Button>}
                                     {(['readonly', 'multiSelect'].includes(prompts[promptIndex].formType) || (prompts[promptIndex].formType === 'searchInput' && form.values[prompts[promptIndex].
                                         //@ts-ignore
-                                        formValue].length > 0) || (prompts[promptIndex].formType === 'shortAnswer' && form.values[prompts[promptIndex].formValue]?.length > 0) || (prompts[promptIndex].formType === 'numberInput' && !isNaN(form.values[prompts[promptIndex].formValue]))) && <Button variant="white" radius={'xl'} size="xl" onClick={handleNext}>{promptIndex === 0 ? 'Begin' : 'Next'}</Button>}{!prompts[promptIndex].isUnskippable && (prompts[promptIndex].formType === 'yesOrNo' || ((prompts[promptIndex].formType === 'searchInput' && [undefined, 0].includes(form.values[prompts[promptIndex].formValue]?.length)))) && ((promptIndex !== FINAL_PROMPT_INDEX || hasAnyQuestionBeenAnswered && promptIndex === FINAL_PROMPT_INDEX)) && <Button variant="white" radius='xl' size='xl' onClick={handleSkip}>Skip</Button>}
+                                        formValue].length > 0) || (prompts[promptIndex].formType === 'shortAnswer' && form.values[prompts[promptIndex].formValue]?.length > 0) || (prompts[promptIndex].formType === 'numberInput' && !isNaN(form.values[prompts[promptIndex].formValue]))) && <Button radius={'xl'} size="lg" onClick={handleNext}>{promptIndex === 0 ? 'Begin' : 'Next'}<IconChevronRight/></Button>}{!prompts[promptIndex].isUnskippable && (prompts[promptIndex].formType === 'yesOrNo' || ((prompts[promptIndex].formType === 'searchInput' && [undefined, 0].includes(form.values[prompts[promptIndex].formValue]?.length)))) && ((promptIndex !== FINAL_PROMPT_INDEX || hasAnyQuestionBeenAnswered && promptIndex === FINAL_PROMPT_INDEX)) && <Button radius='xl' size='lg' onClick={handleSkip}>Skip<IconChevronsRight/></Button>}
                                 </Group>
                             </form>
                     }
@@ -383,4 +396,3 @@ export default function Questions({ isLoggedIn }) {
         </>
     )
 }
-

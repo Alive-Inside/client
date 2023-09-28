@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { NavigationProgress } from "@mantine/nprogress";
 import * as FullStory from '@fullstory/browser';
 import backgroundImage from '../../public/lady-with-headset.jpg'
+import { ModalsProvider } from "@mantine/modals";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -54,12 +55,12 @@ export default function App(props: AppProps) {
           })
         }}
       >
-        <NavigationProgress />
-        <NotificationsProvider>
-          <AppShell>
-            <Component {...pageProps} />
-          </AppShell>
-        </NotificationsProvider>
+          <NavigationProgress />
+          <NotificationsProvider>
+            <AppShell>
+              <Component {...pageProps} />
+            </AppShell>
+          </NotificationsProvider>
       </MantineProvider>
     </>
   );

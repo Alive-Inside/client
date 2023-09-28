@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Center, Container, Image, Loader, Paper, ScrollArea, Skeleton, Text, TextInput } from "@mantine/core";
 import { useClipboard, useDebouncedValue, useMediaQuery } from "@mantine/hooks";
-import { IconDeviceFloppy, IconSearch, IconX } from "@tabler/icons";
+import { IconArrowLeft, IconDeviceFloppy, IconSearch, IconX } from "@tabler/icons";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { OnProgressProps } from "react-player/base";
@@ -38,7 +38,7 @@ const fakeArtist: LoadableArtist = {
 
 const searchLimit = 4;
 
-export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUserData, searchType, generatedPlaylistTracks: generatedTracks, isFinalPlaylist, addTrack, addArtist, removeTrack, removeArtist, initialItems, children, }: { isLoadingTracks?: false, initialItems: (Track | Artist)[], formValues?: any, removeTrack?: Function, removeArtist?: Function, addTrack?: Function, addArtist?: Function, children?: any, isFinalPlaylist?: boolean, generatedPlaylistTracks?: Track[], spotifyUserData: SpotifyUserData, searchType: { item: 'track' | 'artist', multiple: boolean } }) {
+export default function PlaylistModule({ startAgain, isLoadingTracks, formValues, spotifyUserData, searchType, generatedPlaylistTracks: generatedTracks, isFinalPlaylist, addTrack, addArtist, removeTrack, removeArtist, initialItems, children, }: { isLoadingTracks?: false, initialItems: (Track | Artist)[], formValues?: any, removeTrack?: Function, removeArtist?: Function, addTrack?: Function, addArtist?: Function, children?: any, isFinalPlaylist?: boolean, generatedPlaylistTracks?: Track[], spotifyUserData: SpotifyUserData, searchType: { item: 'track' | 'artist', multiple: boolean }, startAgain?: Function }) {
     const [tracks, setTracks] = useState<(Track & { loading?: boolean })[]>(generatedTracks ?? [fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack, fakeTrack,]);
     const [artists, setArtists] = useState<Artist[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -198,7 +198,8 @@ export default function PlaylistModule({ isLoadingTracks, formValues, spotifyUse
                 <ReactPlayer progressInterval={10} onProgress={onProgress} style={{ display: 'none' }} onEnded={onEnd} url={currentlyPlaying?.mp3PreviewUrl} playing={currentlyPlaying?.state !== 'not playing'} />
             }
             <div>
-                <Container mb={'md'} style={{ lineHeight: '1', display: 'flex', alignItems: 'center', height: '3.5rem', color: '#fff' }}>
+                <Container mb={'md'} style={{ lineHeight: '1', justifyContent: 'center', display: 'flex', alignItems: 'center', height: '3.5rem', color: '#fff' }}>
+                    {isFinalPlaylist && <Button onClick={() => startAgain()} radius="xl" variant="white"><IconArrowLeft /> Start again</Button>}
                     <TextInput
                         autoFocus={true} size='md' style={{ margin: `${!isFinalPlaylist ? "0 auto" : "0 0 0 1rem"}` }} value={searchQuery} className='searchBar' autoComplete="off" onChange={(e) => { setSearchQuery(e.currentTarget.value); }} onKeyDown={e => { if (e.key === 'Enter') e.preventDefault(); }} icon={
                             isLoadingSearchQuery ? <Loader size={17} color="black" style={{ marginBottom: '3px' }} /> : <ActionIcon variant="transparent" style={{ marginLeft: '0.25rem', marginBottom: '0' }}>

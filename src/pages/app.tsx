@@ -17,10 +17,10 @@ export default function QuestionsPage({ spotifyUserData }) {
     }, []);
 
     return (
-    <BackgroundImage src={backgroundImage.src} style={{ height: '93.5vh' }}>
+        <BackgroundImage src={backgroundImage.src} style={{ height: '93.5vh' }}>
             <Skeleton visible={isLoading}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
-                    <Questions isLoggedIn={isLoggedIn} />
+                        <Questions isLoggedIn={isLoggedIn} />
                 </div>
             </Skeleton>
         </BackgroundImage>
