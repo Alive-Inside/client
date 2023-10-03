@@ -1,5 +1,6 @@
-import { Card, Center, Container, Text, Title } from "@mantine/core";
+import { Card, Center, Container, Image, Text, Title } from "@mantine/core";
 import useStyles from "../styles";
+import SpotifyLogo from '../../public/img/Spotify_Logo_RGB_Green.png';
 
 export default function HowItWorksPage() {
     const { classes } = useStyles();
@@ -23,10 +24,10 @@ export default function HowItWorksPage() {
             </Container>
             <Container size={"lg"} className={classes.textContainer} mt={'xs'}>
                 <Card>
-                    <Title mt={2}>
-                        SAVE TO SPOTIFY
+                    <Title style={{ display: 'flex', alignContent: 'center' }} mt={2}>
+                        SAVE TO <Image style={{ paddingLeft: '10px', width: '160px', display: 'inline-block', lineHeight: 0 }} src={SpotifyLogo.src} />
                     </Title>
-                    <Text mt={'xs'}>You can save your playlist to Spotify for easy access and editing. With a Premium Spotify account, you can access the music offline.</Text>
+                    <Text mt={'xs'}>You can save your playlist to <Image style={{ paddingLeft: '10px', width: '90px', display: 'inline-block', lineHeight: 0 }} src={SpotifyLogo.src} /> for easy access and editing. With a Premium <Image style={{ paddingLeft: '10px', width: '90px', display: 'inline-block', lineHeight: 0 }} src={SpotifyLogo.src} /> account, you can access the music offline.</Text>
                 </Card>
             </Container>
         </Container>
