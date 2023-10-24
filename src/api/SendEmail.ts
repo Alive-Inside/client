@@ -13,6 +13,11 @@ export default async function SendEmail(
     const {
       publicRuntimeConfig: { BACKEND_URL },
     } = getConfig();
+    const playlistUrlString = localStorage.getItem("exportedSpotifyPlaylist");
+    let playlistUrl = "";
+    if (playlistUrlString) {
+      playlistUrl = JSON.parse(playlistUrlString);
+    }
     await fetch(`${BACKEND_URL}/email`, {
       credentials: "include",
       headers: {
@@ -20,7 +25,13 @@ export default async function SendEmail(
         Authorization: `Bearer ${jwt}`,
       },
       method: "POST",
-      body: JSON.stringify({ emails, tracks, formQuestionsAndAnswers, sessionNotes }),
+      body: JSON.stringify({
+        emails,
+        tracks,
+        formQuestionsAndAnswers,
+        sessionNotes,
+        playlistUrl,
+      }),
     });
   } catch (e) {
     showErrorNotification("Error sending email - Try submitting again");

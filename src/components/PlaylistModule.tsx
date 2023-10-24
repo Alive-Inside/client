@@ -221,7 +221,7 @@ export default function PlaylistModule({ startAgain, isLoadingTracks, formValues
                                 </a>
 
                             </div> : <Loader style={{ marginLeft: '0.5em', marginRight: '1rem', marginTop: '0.75rem' }} variant="dots" color='green' />}
-                            <Link href='/memory-bank'><Button color='blue' radius={'xl'} variant="outline" style={{}}><IconDeviceFloppy style={{ marginRight: '0.5rem' }} />Save to Memory Bank</Button> </Link>
+                            {(spotifyPlaylist !== null && !isSavingToSpotify) && <Link href='/memory-bank'><Button color='blue' radius={'xl'} variant="outline" style={{}}><IconDeviceFloppy style={{ marginRight: '0.5rem' }} />Save to Memory Bank</Button> </Link>}
                             <div style={{ marginLeft: '1rem' }}>
                                 {children}
                             </div>
