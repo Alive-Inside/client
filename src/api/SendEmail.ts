@@ -16,7 +16,7 @@ export default async function SendEmail(
     const playlistUrlString = localStorage.getItem("exportedSpotifyPlaylist");
     let playlistUrl = "";
     if (playlistUrlString) {
-      playlistUrl = JSON.parse(playlistUrlString);
+      playlistUrl = JSON.parse(playlistUrlString).url;
     }
     await fetch(`${BACKEND_URL}/email`, {
       credentials: "include",
