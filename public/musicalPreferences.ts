@@ -1,7 +1,7 @@
 export default [
   {
-    value: "bigband",
-    label: "Big Band",
+    value: "bigbandswing",
+    label: "Big Band / Swing",
   },
   {
     value: "bluegrass",
@@ -28,7 +28,7 @@ export default [
     label: "Country",
   },
   {
-    value: "Black country",
+    value: "black-country",
     label: "Black Country",
   },
   {
@@ -38,6 +38,10 @@ export default [
   {
     value: "disney",
     label: "Disney",
+  },
+  {
+    value: "easy-listening",
+    label: "Easy Listening"
   },
   {
     value: "folk",
@@ -91,9 +95,22 @@ export default [
     value: "hip-hop",
     label: "Hip-Hop",
   },
+  
+  {
+    value: "motown",
+    label: "Motown"
+  },
+  {
+    value: "musicals-broadway",
+    label: "Musicals / Broadway"
+  },
   {
     value: "honky-tonk",
     label: "Honky-Tonk",
+  },
+  {
+    value: "hymms",
+    label: "Hymms"
   },
   {
     value: "indian",
@@ -182,6 +199,10 @@ export default [
   {
     value: "soul",
     label: "Soul",
+  },
+  {
+    value: "soundtracks",
+    label: "Soundtracks"
   },
   {
     value: "spanish",
