@@ -13,7 +13,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useClipboard, useDebouncedValue, useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { IconArrowLeft, IconDeviceFloppy, IconSearch, IconX } from "@tabler/icons";
+import { IconArrowLeft, IconDeviceFloppy, IconRefresh, IconSearch, IconX } from "@tabler/icons";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { OnProgressProps } from "react-player/base";
@@ -356,9 +356,18 @@ export default function PlaylistModule({
           }}
         >
           {isFinalPlaylist && (
-            <Button onClick={() => startAgain()} radius="xl" variant="white">
-              <IconArrowLeft /> Start again
-            </Button>
+            <>
+              {!isQuickList && (
+                <Button onClick={() => startAgain()} radius="xl" variant="white">
+                  <IconArrowLeft /> Start again
+                </Button>
+              )}
+              {isQuickList && (
+                <Button onClick={() => startAgain()} radius="xl" variant="white">
+                  <IconRefresh /> Reset
+                </Button>
+              )}
+            </>
           )}
           <FocusTrap active={activateFocus}>
             <TextInput

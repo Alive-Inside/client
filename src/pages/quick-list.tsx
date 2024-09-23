@@ -5,7 +5,7 @@ import { getSpotifyUserData } from "../AppShell";
 import Track from "../types/Track";
 import { set } from "lodash";
 import SpotifyUserData from "../types/SpotifyUserData";
-import { Center, Container, Flex } from "@mantine/core";
+import { Center, Container, Flex, Title } from "@mantine/core";
 import { useRouter } from "next/router";
 
 export default function QuickList() {
@@ -44,7 +44,10 @@ export default function QuickList() {
 
   return (
     <>
-      <Center h="70vh">
+      <Center h="30vh">
+        <Title order={4}>Quick List</Title>
+      </Center>
+      <Center h="20vh">
         <PlaylistModule
           key={key}
           initialItems={[]}
