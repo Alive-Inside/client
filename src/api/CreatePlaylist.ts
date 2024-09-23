@@ -1,12 +1,17 @@
 import getConfig from "next/config";
 import SpotifyUserData from "../types/SpotifyUserData";
 import LoginRedirect from "../utils/login-redirect";
-
-export default async function createPlaylist(
-  eldersFirstName: string,
-  eldersBirthYear: number,
-  musicalPreferences: string[]
-) {
+export default async function createPlaylist({
+  eldersFirstName,
+  eldersBirthYear,
+  musicalPreferences,
+  customPlaylistName,
+}: {
+  eldersFirstName: string;
+  eldersBirthYear: number;
+  musicalPreferences: string[];
+  customPlaylistName?: string;
+}) {
   const {
     publicRuntimeConfig: { BACKEND_URL },
   } = getConfig();
@@ -20,7 +25,10 @@ export default async function createPlaylist(
         },
         method: "POST",
         body: JSON.stringify({
-          name: `${eldersFirstName} ${eldersBirthYear}`// ${musicalPreferences}`,
+          name:
+            customPlaylistName !== undefined
+              ? customPlaylistName
+              : `${eldersFirstName} ${eldersBirthYear}`, // ${musicalPreferences}`,
         }),
       })
     ).json();
