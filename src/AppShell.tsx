@@ -22,8 +22,15 @@ import {
   Tooltip,
   Transition,
   useMantineTheme,
+  Avatar,
 } from "@mantine/core";
-import { IconCurrencyDollar, IconFileDollar, IconHomeDollar, IconLogout } from "@tabler/icons";
+import {
+  IconCurrencyDollar,
+  IconFileDollar,
+  IconHeadset,
+  IconHomeDollar,
+  IconLogout,
+} from "@tabler/icons";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -263,13 +270,21 @@ export default function AppShell({ children }: { children: any }) {
             {user ? (
               <Flex>
                 <Center>
-                  <Image
+                  {/* <Image
                     style={{ borderRadius: "100px" }}
                     width={40}
                     height={40}
                     src={user.avatar ?? NO_SPOTIFY_AVATAR_IMAGE}
                     alt="Avatar"
-                  />
+                  /> */}
+                  {
+                    // temporarily hide avatar until I find a solution to refresh user's avatar
+                    // I didn't expect spotify to periodically deprecate the endpoint that returns the avatar
+                    // morons
+                    <Avatar color="green">
+                      <IconHeadset />
+                    </Avatar>
+                  }
                   <Text size="sm" ml={"xs"}>
                     <b>{user.name}</b>
                   </Text>
