@@ -1,3 +1,4 @@
-# Mantine Next Template
 
-Frontend for Alive Inside App
+# Frontend for Alive Inside App
+
+![alt text](public/img/spotify-results.png)
